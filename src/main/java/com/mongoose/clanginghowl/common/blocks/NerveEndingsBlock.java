@@ -9,6 +9,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -62,7 +64,7 @@ public class NerveEndingsBlock extends BushBlock implements EntityBlock {
     public void entityInside(BlockState p_60495_, Level p_60496_, BlockPos p_60497_, Entity p_60498_) {
         if (p_60496_ instanceof ServerLevel serverLevel) {
             if (!p_60495_.getValue(TRIGGERED)) {
-                if (!p_60498_.getType().is(CHTags.EntityTypes.TECHNO_FLESH)) {
+                if (!p_60498_.getType().is(CHTags.EntityTypes.TECHNO_FLESH) && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(p_60498_) && p_60498_ instanceof LivingEntity) {
                     serverLevel.setBlock(p_60497_, p_60495_.setValue(TRIGGERED, true), 3);
                     serverLevel.playSound(null, p_60497_.getX(), p_60497_.getY(), p_60497_.getZ(), CHSounds.FLESH_TEAR.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
                     int range = 10;

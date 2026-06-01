@@ -23,6 +23,18 @@ public class CHLevelRegistry {
             if (biome.is(CHTags.Biomes.FLESH_MAIDEN_SPAWN) && CHConfig.FleshMaidenSpawnWeight.get() > 0){
                 builder.getMobSpawnSettings().getSpawner(MobCategory.MONSTER).add(new MobSpawnSettings.SpawnerData(CHEntityType.FLESH_MAIDEN.get(), CHConfig.FleshMaidenSpawnWeight.get(), CHConfig.FleshMaidenSpawnMinCount.get(), CHConfig.FleshMaidenSpawnMaxCount.get()));
             }
+            if (biome.is(CHTags.Biomes.HEMATOMA_SPAWN) && CHConfig.HematomaSpawnWeight.get() > 0){
+                builder.getMobSpawnSettings().getSpawner(MobCategory.MONSTER).add(new MobSpawnSettings.SpawnerData(CHEntityType.HEMATOMA.get(), CHConfig.HematomaSpawnWeight.get(), CHConfig.HematomaSpawnMinCount.get(), CHConfig.HematomaSpawnMaxCount.get()));
+            }
+            if (biome.is(CHTags.Biomes.BLOOD_SPREADER_SPAWN) && CHConfig.BloodSpreaderSpawnWeight.get() > 0){
+                builder.getMobSpawnSettings().getSpawner(MobCategory.MONSTER).add(new MobSpawnSettings.SpawnerData(CHEntityType.BLOOD_SPREADER.get(), CHConfig.BloodSpreaderSpawnWeight.get(), CHConfig.BloodSpreaderSpawnMinCount.get(), CHConfig.BloodSpreaderSpawnMaxCount.get()));
+            }
+            if (biome.is(CHTags.Biomes.PROWLER_SPAWN) && CHConfig.ProwlerSpawnWeight.get() > 0){
+                builder.getMobSpawnSettings().getSpawner(MobCategory.MONSTER).add(new MobSpawnSettings.SpawnerData(CHEntityType.PROWLER.get(), CHConfig.ProwlerSpawnWeight.get(), CHConfig.ProwlerSpawnMinCount.get(), CHConfig.ProwlerSpawnMaxCount.get()));
+            }
+            if (biome.is(CHTags.Biomes.CARCASS_SPAWN) && CHConfig.CarcassSpawnWeight.get() > 0){
+                builder.getMobSpawnSettings().getSpawner(MobCategory.MONSTER).add(new MobSpawnSettings.SpawnerData(CHEntityType.CARCASS.get(), CHConfig.CarcassSpawnWeight.get(), CHConfig.CarcassSpawnMinCount.get(), CHConfig.CarcassSpawnMaxCount.get()));
+            }
         }
     }
 

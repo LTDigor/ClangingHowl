@@ -29,7 +29,13 @@ public class CHEnchantments {
     public static final RegistryObject<Enchantment> OVERDRIVE = ENCHANTMENTS.register("overdrive",
             () -> new EnergyTreasureEnchantment(Enchantment.Rarity.VERY_RARE, EquipmentSlot.MAINHAND));
 
+    public static final RegistryObject<Enchantment> FULL_POWER = ENCHANTMENTS.register("full_power",
+            () -> new EnergyTreasureEnchantment(Enchantment.Rarity.VERY_RARE, EquipmentSlot.MAINHAND));
+
     public static final RegistryObject<Enchantment> KILLER_CHARGE = ENCHANTMENTS.register("killer_charge",
+            () -> new EnergyTreasureEnchantment(Enchantment.Rarity.VERY_RARE, EquipmentSlot.MAINHAND));
+
+    public static final RegistryObject<Enchantment> EXCEEDING_THE_LIMIT = ENCHANTMENTS.register("exceeding_the_limit",
             () -> new EnergyTreasureEnchantment(Enchantment.Rarity.VERY_RARE, EquipmentSlot.MAINHAND));
 
     public static final RegistryObject<Enchantment> FUEL_SAVING = ENCHANTMENTS.register("fuel_saving",
@@ -44,4 +50,6 @@ public class CHEnchantments {
     public static final RegistryObject<Enchantment> FUEL_BURST = ENCHANTMENTS.register("fuel_burst",
             () -> new FuelTreasureEnchantment(Enchantment.Rarity.VERY_RARE, EquipmentSlot.MAINHAND));
 
+    public static final RegistryObject<Enchantment> SOUL_BURNER = ENCHANTMENTS.register("soul_burner",
+            () -> new FuelTreasureEnchantment(Enchantment.Rarity.VERY_RARE, EquipmentSlot.MAINHAND));
 }

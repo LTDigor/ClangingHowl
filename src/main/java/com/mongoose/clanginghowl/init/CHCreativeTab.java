@@ -19,7 +19,10 @@ public class CHCreativeTab {
             .title(Component.translatable("itemGroup.clanginghowl"))
             .displayItems((parameters, output) -> {
                 output.accept(CHItems.ENERGY_BATTERY.get().getPoweredItem());
+                output.accept(CHItems.SMALL_ENERGY_BATTERY.get().getPoweredItem());
                 output.accept(CHItems.ENERGY_INTENSIVE_BATTERY.get().getPoweredItem());
+                output.accept(CHItems.ADVANCED_ENERGY_BATTERY.get().getPowerlessItem());
+                output.accept(CHItems.ADVANCED_ENERGY_BATTERY.get().getPoweredItem());
                 output.accept(CHItems.ADVANCED_HAND_DRILL.get().getPowerlessItem());
                 output.accept(CHItems.ADVANCED_HAND_DRILL.get().getPoweredItem());
                 output.accept(CHItems.ADVANCED_CHAINSAW.get().getPowerlessItem());
@@ -28,6 +31,19 @@ public class CHCreativeTab {
                 output.accept(CHItems.ADVANCED_CHAINSWORD.get().getPoweredItem());
                 output.accept(CHItems.FLAMETHROWER.get().getPowerlessItem());
                 output.accept(CHItems.FLAMETHROWER.get().getPoweredItem());
+                output.accept(CHItems.X_RAY_GOGGLES.get().getPowerlessItem());
+                output.accept(CHItems.X_RAY_GOGGLES.get().getPoweredItem());
+                output.accept(CHItems.ENERGY_BARRIER_GENERATOR.get().getPowerlessItem());
+                output.accept(CHItems.ENERGY_BARRIER_GENERATOR.get().getPoweredItem());
+                output.accept(CHItems.TENDON_STRENGTHENER.get().getPowerlessItem());
+                output.accept(CHItems.TENDON_STRENGTHENER.get().getPoweredItem());
+                output.accept(CHItems.ENERGY_GLOVE.get().getPowerlessItem());
+                output.accept(CHItems.ENERGY_GLOVE.get().getPoweredItem());
+                output.accept(CHItems.JET_BOOTS.get().getPowerlessItem());
+                output.accept(CHItems.JET_BOOTS.get().getPoweredItem());
+                output.accept(CHItems.BLOODY_BATTERY.get());
+                output.accept(CHItems.REANIMATOR.get().getPowerlessItem());
+                output.accept(CHItems.REANIMATOR.get().getPoweredItem());
                 CHItems.ITEMS.getEntries().forEach(i -> {
                     if (i.isPresent()) {
                         if (!CHItems.shouldSkipCreativeModTab(i.get())) {

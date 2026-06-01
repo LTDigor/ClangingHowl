@@ -1,0 +1,92 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "#sensor",
+		"particle": "#sensor"
+	},
+	"render_type": "minecraft:cutout",
+	"elements": [
+		{
+			"from": [5, 0, 5],
+			"to": [11, 1, 11],
+			"rotation": {"angle": 0, "axis": "y", "origin": [6, 0, 6]},
+			"faces": {
+				"north": {"uv": [6, 1.5, 9, 2], "texture": "#0"},
+				"east": {"uv": [6, 2, 9, 2.5], "texture": "#0"},
+				"south": {"uv": [6, 2.5, 9, 3], "texture": "#0"},
+				"west": {"uv": [3, 6, 6, 6.5], "texture": "#0"},
+				"up": {"uv": [6, 3, 3, 0], "texture": "#0"},
+				"down": {"uv": [6, 3, 3, 6], "texture": "#0"}
+			}
+		},
+		{
+			"from": [4.9, -0.1, 4.9],
+			"to": [11.1, 1.1, 11.1],
+			"rotation": {"angle": 0, "axis": "y", "origin": [6, 0, 6]},
+			"faces": {
+				"north": {"uv": [0, 6, 3, 6.5], "texture": "#0"},
+				"east": {"uv": [6, 0, 9, 0.5], "texture": "#0"},
+				"south": {"uv": [6, 0.5, 9, 1], "texture": "#0"},
+				"west": {"uv": [6, 1, 9, 1.5], "texture": "#0"},
+				"up": {"uv": [3, 3, 0, 0], "texture": "#0"},
+				"down": {"uv": [3, 3, 0, 6], "texture": "#0"}
+			}
+		}
+	],
+	"gui_light": "front",
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [75, 45, 0],
+			"translation": [0, 1.75, 2.75],
+			"scale": [0.375, 0.375, 0.375]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [75, 45, 0],
+			"translation": [0, 1.75, 2.75],
+			"scale": [0.375, 0.375, 0.375]
+		},
+		"firstperson_righthand": {
+			"rotation": [-53.01, 65.14, 53.6],
+			"translation": [-0.25, 6.5, 0.25],
+			"scale": [0.69492, 0.69492, 0.69492]
+		},
+		"firstperson_lefthand": {
+			"rotation": [-53.01, 65.14, 53.6],
+			"translation": [-0.25, 6.5, 0.25],
+			"scale": [0.69492, 0.69492, 0.69492]
+		},
+		"ground": {
+			"translation": [0, 3.25, 0],
+			"scale": [0.25, 0.25, 0.25]
+		},
+		"gui": {
+			"rotation": [30, -135, 0],
+			"translation": [0, 7.5, 0],
+			"scale": [1.50391, 1.50391, 1.50391]
+		},
+		"head": {
+			"rotation": [-90, 0, 0],
+			"translation": [0, 3, -14]
+		},
+		"fixed": {
+			"rotation": [-90, 0, 0],
+			"translation": [0, 0, -9.5],
+			"scale": [1.31641, 1.31641, 1.31641]
+		},
+		"on_shelf": {
+			"rotation": [90, -180, 0],
+			"translation": [0, 0, 5],
+			"scale": [1.16992, 1.16992, 1.16992]
+		}
+	},
+	"groups": [
+		{
+			"name": "motionsensor",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [0, 1]
+		}
+	]
+}

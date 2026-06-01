@@ -31,3 +31,9 @@ mandatory=false
 versionRange="[0,)"
 ordering="NONE"
 side="BOTH"
+
+[[dependencies.clanginghowl]]
+modId = "curios"
+mandatory = true
+versionRange = "[1.20-5.3.4,)"
+side = "BOTH"

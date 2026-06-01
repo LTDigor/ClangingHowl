@@ -16,6 +16,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
@@ -65,6 +66,7 @@ import java.util.function.Consumer;
 public class ChainsawItem extends EnergyItem implements GeoItem {
     private static final RawAnimation SAWING = RawAnimation.begin().thenLoop("sawing");
     public AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
+    private static final String OVERHEAT = "Overheat";
     private final Multimap<Attribute, AttributeModifier> attributes;
 
     public ChainsawItem() {
@@ -75,16 +77,38 @@ public class ChainsawItem extends EnergyItem implements GeoItem {
         this.attributes = builder.build();
     }
 
+    @Override
+    public void inventoryTick(ItemStack stack, Level worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+        super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
+        if (!worldIn.isClientSide) {
+            boolean flag = true;
+            if (entityIn instanceof LivingEntity livingEntity) {
+                if (livingEntity.isUsingItem() && livingEntity.getUseItem() == stack) {
+                    flag = false;
+                }
+            }
+            if (flag) {
+                if (getOverheat(stack) > 0) {
+                    setOverheat(stack, getOverheat(stack) - 1);
+                }
+            }
+        }
+    }
+
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot equipmentSlot, ItemStack itemStack) {
         return equipmentSlot == EquipmentSlot.MAINHAND ? this.attributes : super.getAttributeModifiers(equipmentSlot, itemStack);
     }
 
     @Override
     public int getConsumption(ItemStack itemStack) {
+        int amount = super.getConsumption(itemStack);
         if (itemStack.getEnchantmentLevel(CHEnchantments.OVERDRIVE.get()) > 0) {
-            return super.getConsumption(itemStack) + 3;
+            amount += 3;
         }
-        return super.getConsumption(itemStack);
+        if (itemStack.getEnchantmentLevel(CHEnchantments.FULL_POWER.get()) > 0) {
+            amount += 1;
+        }
+        return amount;
     }
 
     @Override
@@ -138,13 +162,24 @@ public class ChainsawItem extends EnergyItem implements GeoItem {
             double d2 = level.random.nextGaussian() * 0.02D;
             level.addParticle(CHParticleTypes.BREAKDOWN_SMOKE.get(), livingEntity.getRandomX(0.5D), livingEntity.getRandomY(), livingEntity.getRandomZ(0.5D), d0, d1, d2);
         }
-        if (IEnergyItem.isEmpty(itemStack)) {
+        if (IEnergyItem.isEmpty(itemStack) || getOverheat(itemStack) >= 200) {
             level.playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), CHSounds.CHAINSAW_DISCHARGED.get(), livingEntity.getSoundSource(), 0.4F, 1.0F);
             livingEntity.stopUsingItem();
+            if (getOverheat(itemStack) >= 200) {
+                if (livingEntity instanceof Player player) {
+                    player.getCooldowns().addCooldown(this, 80);
+                }
+                setOverheat(itemStack, 0);
+            }
         }
         if (level instanceof ServerLevel serverLevel) {
             boolean hitting = false;
-            if (ticks % 10 == 0) {
+            boolean fullPower = itemStack.getEnchantmentLevel(CHEnchantments.FULL_POWER.get()) > 0;
+            int attackTick = fullPower ? 5 : 10;
+            if (fullPower) {
+                setOverheat(itemStack, getOverheat(itemStack) + 1);
+            }
+            if (ticks % attackTick == 0) {
                 double hitRange = 2.5D;
                 Vec3 srcVec = livingEntity.getEyePosition();
                 Vec3 lookVec = livingEntity.getViewVector(1.0F);
@@ -171,6 +206,9 @@ public class ChainsawItem extends EnergyItem implements GeoItem {
                                 extraDamage += 4.0F;
                             }
                             if (entity.hurt(livingEntity.damageSources().mobAttack(livingEntity), 3.0F + extraDamage)) {
+                                if (fullPower) {
+                                    entity.invulnerableTime = 5;
+                                }
                                 int j = EnchantmentHelper.getFireAspect(livingEntity);
                                 if (j > 0 && !entity.isOnFire()) {
                                     entity.setSecondsOnFire(j * 4);
@@ -264,6 +302,23 @@ public class ChainsawItem extends EnergyItem implements GeoItem {
                     destroyBlockProgress(serverLevel, player.getId(), blockPos, -1);
                 }
             }
+        }
+    }
+
+    public static void setOverheat(ItemStack stack, int overheat){
+        if (stack.getTag() != null) {
+            stack.getTag().putInt(OVERHEAT, overheat);
+        } else {
+            CompoundTag compound = stack.getOrCreateTag();
+            compound.putInt(OVERHEAT, overheat);
+        }
+    }
+
+    public static int getOverheat(ItemStack stack) {
+        if (stack.getTag() != null) {
+            return stack.getTag().getInt(OVERHEAT);
+        } else {
+            return 0;
         }
     }
 

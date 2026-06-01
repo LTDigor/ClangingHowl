@@ -1,0 +1,6 @@
+{
+	"parent": "clanginghowl:block/template_motion_sensor",
+	"textures": {
+		"sensor": "clanginghowl:block/motion_sensor"
+	}
+}

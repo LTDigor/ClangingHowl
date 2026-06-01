@@ -58,10 +58,12 @@ public class CHBlocks {
             EXTRATERRESTRIAL_STONE_BRICKS);
 
     public static final RegistryObject<Block> CARVED_EXTRATERRESTRIAL_STONE_BRICKS = register("carved_extraterrestrial_stone_bricks", ExStoneBricksBlock::new);
+    public static final RegistryObject<Block> CHARGED_EXTRATERRESTRIAL_STONE_BRICKS = register("charged_extraterrestrial_stone_bricks", ExStoneBricksBlock::new);
 
     public static final RegistryObject<Block> EXTRATERRESTRIAL_COLUMN = register("extraterrestrial_column", () -> pillar(smoothExStoneProperties()));
 
     public static final RegistryObject<Block> EXTRATERRESTRIAL_PEBBLE = register("extraterrestrial_pebble", ExPebbleBlock::new);
+    public static final RegistryObject<Block> BURNISHED_EXTRATERRESTRIAL_STONE = register("burnished_extraterrestrial_stone", ExStoneBlock::new);
     public static final RegistryObject<Block> INCANDESCENT_EXTRATERRESTRIAL_STONE = register("incandescent_extraterrestrial_stone", () -> new MagmaBlock(exStoneProperties().lightLevel(l -> 3).hasPostProcess(CHBlocks::always).emissiveRendering(CHBlocks::always)));
 
     //Ores
@@ -71,12 +73,14 @@ public class CHBlocks {
     //Energy Clusters
     public static final RegistryObject<Block> EXTRATERRESTRIAL_ENERGY_CLUSTER = registerCluster("extraterrestrial_energy_cluster", ExEnergyClusterBlock::new);
     public static final RegistryObject<Block> HUGE_EXTRATERRESTRIAL_ENERGY_CLUSTER = register("huge_extraterrestrial_energy_cluster", HugeExEnergyClusterBlock::new, true, LootTableType.EMPTY);
+    public static final RegistryObject<Block> EXTRATERRESTRIAL_ENERGY_CRYSTAL_BLOCK = register("extraterrestrial_energy_crystal_block", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE).sound(SoundType.AMETHYST).strength(1.5F, 6.0F)));
 
     //Steel
     public static final RegistryObject<Block> RAW_EXTRATERRESTRIAL_STEEL_BLOCK = register("raw_extraterrestrial_steel_block", () -> new ExSteelBlock(Blocks.STONE));
     public static final RegistryObject<Block> EXTRATERRESTRIAL_STEEL_BLOCK = register("extraterrestrial_steel_block", () -> new ExSteelBlock(Blocks.NETHERITE_BLOCK));
     public static final RegistryObject<Block> STEEL_PLATE_BLOCK = register("steel_plate_block", ExSteelPlateBlock::new);
     public static final RegistryObject<Block> DAMAGED_STEEL_PLATE_BLOCK = register("damaged_steel_plate_block", ExSteelPlateBlock::new);
+    public static final RegistryObject<Block> CORRUGATED_STEEL_BLOCK = register("corrugated_steel_block", ExSteelPlateBlock::new);
     public static final RegistryObject<Block> CARVED_STEEL_PLATE_BLOCK = register("carved_steel_plate_block", () -> pillar(exSteelPlateProperties()));
     public static final RegistryObject<Block> CARVED_STEEL_PLATE_STAIRS = registerStairs("carved_steel_plate_stairs",
             CARVED_STEEL_PLATE_BLOCK);
@@ -84,7 +88,17 @@ public class CHBlocks {
             CARVED_STEEL_PLATE_BLOCK);
     public static final RegistryObject<Block> DAMAGED_CARVED_STEEL_PLATE_BLOCK = register("damaged_carved_steel_plate_block", () -> pillar(exSteelPlateProperties()));
     public static final RegistryObject<Block> EXTRATERRESTRIAL_STEEL_GRATE = register("extraterrestrial_steel_grate", GrateBlock::new);
+    public static final RegistryObject<IronBarsBlock> EXTRATERRESTRIAL_STEEL_GRATE_PANEL = register("extraterrestrial_steel_grate_panel", () -> new IronBarsBlock(exSteelPlateProperties().noOcclusion()));
     public static final RegistryObject<Block> STEEL_BRIDGE = register("steel_bridge", SteelBridgeBlock::new);
+    public static final RegistryObject<Block> STEEL_BRIDGE_SLAB = register("steel_bridge_slab", () -> new SlabBlock(exSteelPlateProperties().noOcclusion()){
+        public float getShadeBrightness(BlockState p_48731_, BlockGetter p_48732_, BlockPos p_48733_) {
+            return 1.0F;
+        }
+
+        public boolean propagatesSkylightDown(BlockState p_48740_, BlockGetter p_48741_, BlockPos p_48742_) {
+            return true;
+        }
+    });
     public static final RegistryObject<Block> STEEL_ROD = register("steel_rod", () -> new SteelRodBlock(exSteelPlateProperties().noOcclusion()));
     public static final RegistryObject<Block> STEEL_DOOR = register("steel_door",
             () -> new DoorBlock(Block.Properties.of()
@@ -102,6 +116,35 @@ public class CHBlocks {
                     .noOcclusion(),
                     CHBlockSetType.EX_STEEL));
 
+    //Lamp
+    public static final RegistryObject<Block> STEEL_LAMP = register("steel_lamp", SteelLampBlock::new);
+    public static final RegistryObject<Block> BROKEN_STEEL_LAMP = register("broken_steel_lamp", BrokenSteelLampBlock::new);
+    public static final RegistryObject<Block> REDSTONE_STEEL_LAMP = register("redstone_steel_lamp", RedstoneSteelLampBlock::new);
+
+    //Fireproof
+    public static final RegistryObject<Block> FIREPROOF_STEEL_BLOCK = fireproof("fireproof_steel_block", FireproofSteelBlock::new);
+    public static final RegistryObject<Block> CARVED_FIREPROOF_STEEL_BLOCK = fireproof("carved_fireproof_steel_block", FireproofSteelBlock::new);
+    public static final RegistryObject<Block> CARVED_FIREPROOF_STEEL_STAIRS = fireproofStairs("carved_fireproof_steel_stairs",
+            CARVED_FIREPROOF_STEEL_BLOCK);
+    public static final RegistryObject<Block> CARVED_FIREPROOF_STEEL_SLAB = fireproofSlabs("carved_fireproof_steel_slab",
+            CARVED_FIREPROOF_STEEL_BLOCK);
+    public static final RegistryObject<Block> FIREPROOF_STEEL_DOOR = fireproof("fireproof_steel_door",
+            () -> new DoorBlock(Block.Properties.of()
+                    .instrument(NoteBlockInstrument.BASS)
+                    .strength(2.0F, 35.0F)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .noOcclusion()
+                    .isRedstoneConductor((i, d, k) -> false), CHBlockSetType.FIREPROOF_STEEL));
+    public static final RegistryObject<Block> FIREPROOF_STEEL_TRAPDOOR = fireproof("fireproof_steel_trapdoor",
+            () -> new TrapDoorBlock(Block.Properties.of()
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .instrument(NoteBlockInstrument.BASS)
+                    .strength(2.0F, 35.0F)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .noOcclusion(),
+                    CHBlockSetType.FIREPROOF_STEEL));
+    public static final RegistryObject<Block> BLAZE_FUEL_CYLINDER_BLOCK = register("blaze_fuel_cylinder", BlazeFuelCylinderBlock::new, false, LootTableType.EMPTY);
+
     //Calcite
     public static final RegistryObject<Block> CALCITE_TILES = register("calcite_tiles", () -> new Block(BlockBehaviour.Properties.copy(Blocks.CALCITE)));
     public static final RegistryObject<Block> CALCITE_TILE_STAIRS = registerStairs("calcite_tile_stairs",
@@ -114,6 +157,11 @@ public class CHBlocks {
     //Ice
     public static final RegistryObject<Block> CRYOGENIC_ICICLE = register("cryogenic_icicle", IcicleBlock::new);
     public static final RegistryObject<Block> BIG_CRYOGENIC_ICICLE = register("big_cryogenic_icicle", BigIcicleBlock::new, false, LootTableType.EMPTY);
+    public static final RegistryObject<Block> CRYOGENIC_FROST = register("cryogenic_frost", CryoFrostBlock::new, true, LootTableType.EMPTY);
+
+    //Redstone
+//    public static final RegistryObject<Block> REDSTONE_CABLE = register("redstone_cable", RedstoneCableBlock::new);
+//    public static final RegistryObject<Block> REDSTONE_CABLE_DISTRIBUTOR = fireproof("redstone_cable_distributor", RedstoneCableDistributorBlock::new);
 
     //Flesh
     public static final RegistryObject<Block> TECHNOFLESH_BLOCK = register("technoflesh_block", FleshBlock::new);
@@ -130,10 +178,16 @@ public class CHBlocks {
     public static final RegistryObject<Block> BIG_HANGING_TECHNOFLESH = register("big_hanging_technoflesh", BigHangingFleshBlock::new, false, LootTableType.EMPTY);
     public static final RegistryObject<Block> NERVE_ENDINGS = register("nerve_endings", NerveEndingsBlock::new, true, LootTableType.EMPTY);
     public static final RegistryObject<Block> TECHNOFLESH_NEST = register("technoflesh_nest", FleshNestBlock::new, true, LootTableType.EMPTY);
+    public static final RegistryObject<Block> CONSUMMATE_NEST = register("consummate_nest", ConsummateNestBlock::new, true, LootTableType.EMPTY);
 
     //Tech
     public static final RegistryObject<Block> CRYSTAL_FORMER = register("crystal_former", CrystalFormerBlock::new);
     public static final RegistryObject<Block> STATIONARY_CHARGING_STATION = register("stationary_charging_station", ChargingStationBlock::new);
+    public static final RegistryObject<Block> BARRIER_OF_EXTRATERRESTRIAL_ACTIVITY = register("barrier_of_extraterrestrial_activity", ExBarrierBlock::new);
+    public static final RegistryObject<Block> BROKEN_CRYSTAL_FORMER = register("broken_crystal_former", BrokenCrystalFormerBlock::new);
+    public static final RegistryObject<Block> FLAME_SPEWER = register("flame_spewer", FlameSpewerBlock::new);
+    public static final RegistryObject<Block> MOTION_SENSOR = register("motion_sensor", MotionSensorBlock::new);
+    public static final RegistryObject<Block> EXTRATERRESTRIAL_ACTIVITY_RADAR = register("extraterrestrial_activity_radar", ExActivityRadarBlock::new);
 
     private static RotatedPillarBlock pillar(BlockBehaviour.Properties properties) {
         return new RotatedPillarBlock(properties);
@@ -145,6 +199,14 @@ public class CHBlocks {
 
     public static <T extends Block> RegistryObject<Block> registerStairs(final String name, final RegistryObject<T> block){
         return register(name, () -> new StairBlock(() -> block.get().defaultBlockState(), Block.Properties.copy(block.get())));
+    }
+
+    public static <T extends Block> RegistryObject<Block> fireproofSlabs(final String string, final RegistryObject<T> block){
+        return fireproof(string, () -> new SlabBlock(Block.Properties.copy(block.get())), true);
+    }
+
+    public static <T extends Block> RegistryObject<Block> fireproofStairs(final String name, final RegistryObject<T> block){
+        return fireproof(name, () -> new StairBlock(() -> block.get().defaultBlockState(), Block.Properties.copy(block.get())));
     }
 
     public static <T extends Block> RegistryObject<Block> registerWalls(final String name, final RegistryObject<T> block){
@@ -165,6 +227,24 @@ public class CHBlocks {
         if (blockItemDefault) {
             CHItems.ITEMS.register(string,
                     () -> new CHBlockItem(block.get(), new Item.Properties()));
+        }
+        return block;
+    }
+
+    public static <T extends Block> RegistryObject<T> fireproof(final String string, final Supplier<? extends T> sup){
+        return fireproof(string, sup, true);
+    }
+
+    public static <T extends Block> RegistryObject<T> fireproof(final String string, final Supplier<? extends T> sup, boolean blockItemDefault){
+        return fireproof(string, sup, blockItemDefault, LootTableType.DROP);
+    }
+
+    public static <T extends Block> RegistryObject<T> fireproof(final String string, final Supplier<? extends T> sup, boolean blockItemDefault, LootTableType lootTableType) {
+        RegistryObject<T> block = BLOCKS.register(string, sup);
+        BLOCK_LOOT.put(block.getId(), new BlockLootSetting(blockItemDefault, lootTableType));
+        if (blockItemDefault) {
+            CHItems.ITEMS.register(string,
+                    () -> new CHBlockItem(block.get(), new Item.Properties().fireResistant()));
         }
         return block;
     }
@@ -245,6 +325,20 @@ public class CHBlocks {
                 .mapColor(MapColor.COLOR_GRAY)
                 .requiresCorrectToolForDrops()
                 .strength(2.0F, 10.0F);
+    }
+
+    public static class FireproofSteelBlock extends Block {
+        public FireproofSteelBlock() {
+            super(fireproofSteelProperties());
+        }
+    }
+
+    public static BlockBehaviour.Properties fireproofSteelProperties() {
+        return BlockBehaviour.Properties.of()
+                .sound(SoundType.NETHERITE_BLOCK)
+                .mapColor(MapColor.COLOR_GRAY)
+                .requiresCorrectToolForDrops()
+                .strength(2.0F, 35.0F);
     }
 
     /**

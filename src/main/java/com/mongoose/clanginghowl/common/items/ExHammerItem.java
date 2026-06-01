@@ -1,6 +1,7 @@
 package com.mongoose.clanginghowl.common.items;
 
 import com.mongoose.clanginghowl.client.particles.CHParticleTypes;
+import com.mongoose.clanginghowl.common.blocks.BrokenSteelLampBlock;
 import com.mongoose.clanginghowl.common.blocks.CHBlocks;
 import com.mongoose.clanginghowl.utils.ItemHelper;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -66,6 +67,12 @@ public class ExHammerItem extends SwordItem {
         }
         if (blockstate.is(CHBlocks.CARVED_STEEL_PLATE_BLOCK.get())) {
             result = CHBlocks.DAMAGED_CARVED_STEEL_PLATE_BLOCK.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, blockstate.getValue(RotatedPillarBlock.AXIS));
+        }
+        if (blockstate.is(CHBlocks.STEEL_LAMP.get())) {
+            result = CHBlocks.BROKEN_STEEL_LAMP.get().defaultBlockState().setValue(BrokenSteelLampBlock.FACING, blockstate.getValue(BrokenSteelLampBlock.FACING));
+        }
+        if (blockstate.is(CHBlocks.CRYSTAL_FORMER.get())) {
+            result = CHBlocks.BROKEN_CRYSTAL_FORMER.get().defaultBlockState();
         }
         if (result != null) {
             level.playSound(player, blockpos, SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.BLOCKS, 1.0F, 1.0F);

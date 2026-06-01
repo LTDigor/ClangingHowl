@@ -4,10 +4,8 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.mongoose.clanginghowl.client.particles.CHParticleTypes;
 import com.mongoose.clanginghowl.client.particles.RotationParticleOption;
-import com.mongoose.clanginghowl.common.blocks.CHBlockStates;
-import com.mongoose.clanginghowl.common.blocks.CHBlocks;
-import com.mongoose.clanginghowl.common.blocks.CrystalFormerBlock;
-import com.mongoose.clanginghowl.common.blocks.SteelBridgeBlock;
+import com.mongoose.clanginghowl.common.blocks.*;
+import com.mongoose.clanginghowl.init.CHTags;
 import com.mongoose.clanginghowl.utils.ItemHelper;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
@@ -67,8 +65,26 @@ public class WrenchItem extends Item {
         if (blockstate.is(CHBlocks.DAMAGED_CARVED_STEEL_PLATE_BLOCK.get())) {
             result = CHBlocks.CARVED_STEEL_PLATE_BLOCK.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, blockstate.getValue(RotatedPillarBlock.AXIS));
         }
+        if (blockstate.is(CHBlocks.STEEL_LAMP.get())) {
+            result = blockstate.cycle(SteelLampBlock.ENABLED);
+        }
+        if (blockstate.is(CHBlocks.BROKEN_STEEL_LAMP.get())) {
+            result = CHBlocks.STEEL_LAMP.get().defaultBlockState().setValue(SteelLampBlock.FACING, blockstate.getValue(SteelLampBlock.FACING));
+        }
+        if (blockstate.is(CHBlocks.REDSTONE_STEEL_LAMP.get())) {
+            result = blockstate.setValue(RedstoneSteelLampBlock.TRIGGER, 1).cycle(RedstoneSteelLampBlock.ENABLED);
+        }
+        if (blockstate.is(CHBlocks.BROKEN_CRYSTAL_FORMER.get())) {
+            result = CHBlocks.CRYSTAL_FORMER.get().defaultBlockState();
+        }
         if (blockstate.is(CHBlocks.CRYSTAL_FORMER.get())) {
             result = blockstate.cycle(CrystalFormerBlock.ENABLED);
+        }
+        if (blockstate.is(CHBlocks.FLAME_SPEWER.get())) {
+            result = blockstate.cycle(FlameSpewerBlock.ENABLED);
+        }
+        if (blockstate.is(CHBlocks.BARRIER_OF_EXTRATERRESTRIAL_ACTIVITY.get())) {
+            result = blockstate.cycle(ExBarrierBlock.ENABLED);
         }
         if (blockstate.is(CHBlocks.STEEL_BRIDGE.get())) {
             result = blockstate.cycle(SteelBridgeBlock.ALTERNATE);
@@ -81,9 +97,9 @@ public class WrenchItem extends Item {
             if (blockstate.hasProperty(CHBlockStates.ALTERNATE)) {
                 level.playSound(player, blockpos, SoundEvents.COPPER_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
                 level.addParticle(new RotationParticleOption(1.0F, 0), vec3.x, vec3.y, vec3.z, 0.0F, 0.0F, 0.0F);
-            } else if (blockstate.hasProperty(BlockStateProperties.ENABLED)) {
+            } else if (blockstate.hasProperty(BlockStateProperties.ENABLED) && !blockstate.is(CHTags.Blocks.BROKEN)) {
                 level.playSound(player, blockpos, SoundEvents.COMPARATOR_CLICK, SoundSource.BLOCKS, 1.0F, 1.0F);
-            } else if (blockstate.hasProperty(StairBlock.FACING)) {
+            } else if (blockstate.hasProperty(StairBlock.FACING) && !blockstate.is(CHTags.Blocks.BROKEN)) {
                 if (player != null) {
                     player.getCooldowns().addCooldown(this, 5);
                 }

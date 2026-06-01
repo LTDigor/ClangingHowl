@@ -1,0 +1,49 @@
+{
+  "variants": {
+    "facing=east,cylinders=1": {
+      "model": "clanginghowl:block/blaze_fuel_cylinder_block",
+      "y": 270
+    },
+    "facing=east,cylinders=2": {
+      "model": "clanginghowl:block/blaze_fuel_cylinder_block_two",
+      "y": 270
+    },
+    "facing=east,cylinders=3": {
+      "model": "clanginghowl:block/blaze_fuel_cylinder_block_three",
+      "y": 270
+    },
+    "facing=north,cylinders=1": {
+      "model": "clanginghowl:block/blaze_fuel_cylinder_block",
+      "y": 180
+    },
+    "facing=north,cylinders=2": {
+      "model": "clanginghowl:block/blaze_fuel_cylinder_block_two",
+      "y": 180
+    },
+    "facing=north,cylinders=3": {
+      "model": "clanginghowl:block/blaze_fuel_cylinder_block_three",
+      "y": 180
+    },
+    "facing=south,cylinders=1": {
+      "model": "clanginghowl:block/blaze_fuel_cylinder_block"
+    },
+    "facing=south,cylinders=2": {
+      "model": "clanginghowl:block/blaze_fuel_cylinder_block_two"
+    },
+    "facing=south,cylinders=3": {
+      "model": "clanginghowl:block/blaze_fuel_cylinder_block_three"
+    },
+    "facing=west,cylinders=1": {
+      "model": "clanginghowl:block/blaze_fuel_cylinder_block",
+      "y": 90
+    },
+    "facing=west,cylinders=2": {
+      "model": "clanginghowl:block/blaze_fuel_cylinder_block_two",
+      "y": 90
+    },
+    "facing=west,cylinders=3": {
+      "model": "clanginghowl:block/blaze_fuel_cylinder_block_three",
+      "y": 90
+    }
+  }
+}

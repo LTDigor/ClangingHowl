@@ -55,7 +55,7 @@ public class ChargingStationBlock extends HorizontalDirectionalBlock implements 
             if (pedestal != null) {
                 pedestal.getCapability(ForgeCapabilities.ITEM_HANDLER, hit.getDirection()).ifPresent(handler -> {
                     ItemStack itemStack = handler.getStackInSlot(0);
-                    if (itemStack.isEmpty() && heldItem.getItem() instanceof IEnergyItem) {
+                    if (itemStack.isEmpty() && heldItem.getItem() instanceof IEnergyItem item && item.canCharge()) {
                         player.setItemInHand(hand, handler.insertItem(0, heldItem, false));
                         world.playSound(null, pos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, 1, 1);
                     } else if (!itemStack.isEmpty()) {

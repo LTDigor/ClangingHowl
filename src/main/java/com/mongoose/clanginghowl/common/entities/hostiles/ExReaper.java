@@ -1,12 +1,14 @@
 package com.mongoose.clanginghowl.common.entities.hostiles;
 
+import com.mongoose.clanginghowl.client.particles.CHParticleTypes;
 import com.mongoose.clanginghowl.common.effects.CHEffects;
 import com.mongoose.clanginghowl.common.entities.ai.ModMeleeAttackGoal;
 import com.mongoose.clanginghowl.config.CHConfig;
 import com.mongoose.clanginghowl.init.CHSounds;
-import com.mongoose.clanginghowl.init.CHTags;
+import com.mongoose.clanginghowl.utils.EffectsUtil;
 import com.mongoose.clanginghowl.utils.MathHelper;
 import com.mongoose.clanginghowl.utils.MobUtil;
+import com.mongoose.clanginghowl.utils.ParticleUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -15,6 +17,7 @@ import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
@@ -29,6 +32,7 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.AbstractIllager;
 import net.minecraft.world.entity.monster.Monster;
@@ -43,7 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class ExReaper extends Monster {
+public class ExReaper extends TFleshMonster {
     private static final EntityDataAccessor<Integer> ANIM_STATE = SynchedEntityData.defineId(ExReaper.class, EntityDataSerializers.INT);
     public static String IDLE = "idle";
     public static String ATTACK = "attack";
@@ -56,7 +60,7 @@ public class ExReaper extends Monster {
     public AnimationState infectAnimationState = new AnimationState();
     public AnimationState appearAnimationState = new AnimationState();
 
-    public ExReaper(EntityType<? extends Monster> p_33002_, Level p_33003_) {
+    public ExReaper(EntityType<? extends TFleshMonster> p_33002_, Level p_33003_) {
         super(p_33002_, p_33003_);
         this.xpReward = 6;
     }
@@ -106,21 +110,6 @@ public class ExReaper extends Monster {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(ANIM_STATE, 0);
-    }
-
-    @Override
-    public boolean isAlliedTo(Entity entity) {
-        if (entity == null) {
-            return false;
-        } else if (entity == this) {
-            return true;
-        } else if (super.isAlliedTo(entity)) {
-            return true;
-        } else if (entity.getType().is(CHTags.EntityTypes.TECHNO_FLESH)) {
-            return this.getTeam() == null && entity.getTeam() == null;
-        } else {
-            return false;
-        }
     }
 
     public static boolean checkExReaperSpawnRules(EntityType<? extends Monster> entityType, ServerLevelAccessor levelAccessor, MobSpawnType spawnType, BlockPos blockPos, RandomSource randomSource) {
@@ -284,25 +273,42 @@ public class ExReaper extends Monster {
 
     @Override
     public boolean doHurtTarget(Entity entityIn) {
-        boolean flag = super.doHurtTarget(entityIn);
+        boolean flag;
+        if (this.isCurrentAnimation(INFECT)) {
+            flag = entityIn.hurt(this.damageSources().mobAttack(this), 2.0F);
+        } else {
+            flag = super.doHurtTarget(entityIn);
+        }
 
         if (!this.level().isClientSide) {
-            if (flag) {
-                if (this.isCurrentAnimation(INFECT)) {
-                    this.playSound(CHSounds.INJECT.get(), 1.0F, 1.0F);
-                    this.setAnimationState(INFECT);
-                    LivingEntity livingEntity = (LivingEntity) entityIn;
-                    int time = 300;
-                    if (livingEntity instanceof AbstractVillager) {
-                        time = 12000;
-                    } else if (livingEntity instanceof AbstractIllager) {
-                        time = 500;
-                    }
-                    livingEntity.addEffect(new MobEffectInstance(CHEffects.BEYOND_FLESH.get(), time, 0, false, false));
-                    this.setTarget(null);
-                    if (livingEntity instanceof Mob mob) {
-                        mob.setTarget(null);
-                        mob.setLastHurtByMob(null);
+            if (this.isCurrentAnimation(INFECT)) {
+                this.playSound(CHSounds.INJECT.get(), 1.0F, 1.0F);
+                this.setAnimationState(INFECT);
+                LivingEntity livingEntity = (LivingEntity) entityIn;
+                int time = 300;
+                if (livingEntity instanceof AbstractVillager) {
+                    time = 12000;
+                } else if (livingEntity instanceof AbstractIllager) {
+                    time = 500;
+                } else if (livingEntity instanceof Animal) {
+                    time *= 2;
+                }
+                livingEntity.addEffect(new MobEffectInstance(CHEffects.BEYOND_FLESH.get(), time, 0, false, false));
+                this.setTarget(null);
+                if (livingEntity instanceof Mob mob) {
+                    mob.setTarget(null);
+                    mob.setLastHurtByMob(null);
+                }
+            } else if (entityIn instanceof Player player && flag) {
+                boolean flag2;
+                if (!player.hasEffect(CHEffects.SAWING_UP_HEALTH.get())) {
+                    flag2 = player.addEffect(new MobEffectInstance(CHEffects.SAWING_UP_HEALTH.get(), 500));
+                } else {
+                    flag2 = EffectsUtil.amplifyEffect(player, CHEffects.SAWING_UP_HEALTH.get(), 500, 9, false, true);
+                }
+                if (flag2) {
+                    if (this.level() instanceof ServerLevel serverLevel) {
+                        ParticleUtil.addParticlesAroundMiddleSelf(serverLevel, CHParticleTypes.CRIMSON_POOF.get(), player);
                     }
                 }
             }

@@ -1,0 +1,44 @@
+{
+	"textures": {
+		"0": "clanginghowl:block/steel_rod",
+		"particle": "clanginghowl:block/steel_rod"
+	},
+	"elements": [
+		{
+			"from": [7, 0, 7],
+			"to": [9, 16, 9],
+			"faces": {
+				"north": {"uv": [0, 0, 2, 16], "texture": "#0"},
+				"east": {"uv": [2, 0, 4, 16], "texture": "#0"},
+				"south": {"uv": [4, 0, 6, 16], "texture": "#0"},
+				"west": {"uv": [6, 0, 8, 16], "texture": "#0"},
+				"up": {"uv": [10, 2, 8, 0], "texture": "#0"},
+				"down": {"uv": [10, 2, 8, 4], "texture": "#0"}
+			}
+		},
+		{
+			"from": [7, 7, 0],
+			"to": [9, 9, 16],
+			"faces": {
+				"north": {"uv": [10, 2, 8, 0], "rotation": 180, "texture": "#0"},
+				"east": {"uv": [2, 0, 4, 16], "rotation": 90, "texture": "#0"},
+				"south": {"uv": [10, 2, 8, 4], "texture": "#0"},
+				"west": {"uv": [6, 0, 8, 16], "rotation": 270, "texture": "#0"},
+				"up": {"uv": [4, 0, 6, 16], "texture": "#0"},
+				"down": {"uv": [0, 0, 2, 16], "rotation": 180, "texture": "#0"}
+			}
+		},
+		{
+			"from": [0, 7, 7],
+			"to": [16, 9, 9],
+			"faces": {
+				"north": {"uv": [6, 0, 8, 16], "rotation": 270, "texture": "#0"},
+				"east": {"uv": [10, 2, 8, 0], "rotation": 180, "texture": "#0"},
+				"south": {"uv": [2, 0, 4, 16], "rotation": 90, "texture": "#0"},
+				"west": {"uv": [10, 2, 8, 4], "texture": "#0"},
+				"up": {"uv": [4, 0, 6, 16], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [0, 0, 2, 16], "rotation": 90, "texture": "#0"}
+			}
+		}
+	]
+}

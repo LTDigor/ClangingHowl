@@ -1,0 +1,56 @@
+{
+  "variants": {
+    "facing=up,enabled=false": {
+      "model": "clanginghowl:block/flame_spewer_inactive"
+    },
+    "facing=down,enabled=false": {
+      "model": "clanginghowl:block/flame_spewer_inactive",
+      "x": 180
+    },
+    "facing=east,enabled=false": {
+      "model": "clanginghowl:block/flame_spewer_inactive",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north,enabled=false": {
+      "model": "clanginghowl:block/flame_spewer_inactive",
+      "x": 90
+    },
+    "facing=south,enabled=false": {
+      "model": "clanginghowl:block/flame_spewer_inactive",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west,enabled=false": {
+      "model": "clanginghowl:block/flame_spewer_inactive",
+      "x": 90,
+      "y": 270
+    },
+    "facing=up,enabled=true": {
+      "model": "clanginghowl:block/flame_spewer"
+    },
+    "facing=down,enabled=true": {
+      "model": "clanginghowl:block/flame_spewer",
+      "x": 180
+    },
+    "facing=east,enabled=true": {
+      "model": "clanginghowl:block/flame_spewer",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north,enabled=true": {
+      "model": "clanginghowl:block/flame_spewer",
+      "x": 90
+    },
+    "facing=south,enabled=true": {
+      "model": "clanginghowl:block/flame_spewer",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west,enabled=true": {
+      "model": "clanginghowl:block/flame_spewer",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

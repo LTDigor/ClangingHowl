@@ -4,7 +4,6 @@ import com.mongoose.clanginghowl.common.effects.CHEffects;
 import com.mongoose.clanginghowl.common.entities.ai.ModMeleeAttackGoal;
 import com.mongoose.clanginghowl.config.CHConfig;
 import com.mongoose.clanginghowl.init.CHSounds;
-import com.mongoose.clanginghowl.init.CHTags;
 import com.mongoose.clanginghowl.utils.MathHelper;
 import com.mongoose.clanginghowl.utils.MobUtil;
 import net.minecraft.core.BlockPos;
@@ -40,7 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class FleshMaiden extends Monster {
+public class FleshMaiden extends TFleshMonster {
     private static final EntityDataAccessor<Integer> ANIM_STATE = SynchedEntityData.defineId(FleshMaiden.class, EntityDataSerializers.INT);
     public static String IDLE = "idle";
     public static String ATTACK = "attack";
@@ -118,21 +117,6 @@ public class FleshMaiden extends Monster {
 
     protected void playStepSound(BlockPos p_34316_, BlockState p_34317_) {
         this.playSound(this.getStepSound(), 0.15F, 1.0F);
-    }
-
-    @Override
-    public boolean isAlliedTo(Entity entity) {
-        if (entity == null) {
-            return false;
-        } else if (entity == this) {
-            return true;
-        } else if (super.isAlliedTo(entity)) {
-            return true;
-        } else if (entity.getType().is(CHTags.EntityTypes.TECHNO_FLESH)) {
-            return this.getTeam() == null && entity.getTeam() == null;
-        } else {
-            return false;
-        }
     }
 
     public static boolean checkFleshMaidenSpawnRules(EntityType<? extends Monster> entityType, ServerLevelAccessor levelAccessor, MobSpawnType spawnType, BlockPos blockPos, RandomSource randomSource) {

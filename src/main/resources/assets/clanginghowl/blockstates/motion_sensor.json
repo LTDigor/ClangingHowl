@@ -1,0 +1,56 @@
+{
+  "variants": {
+    "powered=true,facing=down": {
+      "model": "clanginghowl:block/motion_sensor_powered",
+      "x": 180
+    },
+    "powered=true,facing=east": {
+      "model": "clanginghowl:block/motion_sensor_powered",
+      "x": 90,
+      "y": 90
+    },
+    "powered=true,facing=north": {
+      "model": "clanginghowl:block/motion_sensor_powered",
+      "x": 90
+    },
+    "powered=true,facing=south": {
+      "model": "clanginghowl:block/motion_sensor_powered",
+      "x": 90,
+      "y": 180
+    },
+    "powered=true,facing=up": {
+      "model": "clanginghowl:block/motion_sensor_powered"
+    },
+    "powered=true,facing=west": {
+      "model": "clanginghowl:block/motion_sensor_powered",
+      "x": 90,
+      "y": 270
+    },
+    "powered=false,facing=down": {
+      "model": "clanginghowl:block/motion_sensor",
+      "x": 180
+    },
+    "powered=false,facing=east": {
+      "model": "clanginghowl:block/motion_sensor",
+      "x": 90,
+      "y": 90
+    },
+    "powered=false,facing=north": {
+      "model": "clanginghowl:block/motion_sensor",
+      "x": 90
+    },
+    "powered=false,facing=south": {
+      "model": "clanginghowl:block/motion_sensor",
+      "x": 90,
+      "y": 180
+    },
+    "powered=false,facing=up": {
+      "model": "clanginghowl:block/motion_sensor"
+    },
+    "powered=false,facing=west": {
+      "model": "clanginghowl:block/motion_sensor",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

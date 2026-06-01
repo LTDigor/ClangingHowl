@@ -9,11 +9,20 @@
   },
   "mixins": [
     "EnchantRandomlyFunctionMixin",
+    "EntityMixin",
     "FireBlockAccessor",
     "LivingEntityMixin",
-    "MobEffectInstanceMixin"
+    "MobEffectInstanceMixin",
+    "ServerLevelMixin"
   ],
   "client": [
-    "LivingEntityRendererMixin"
+    "ClientLevelMixin",
+    "EntityRendererMixin",
+    "FogRendererMixin",
+    "GameRendererMixin",
+    "LevelRendererMixin",
+    "LightTextureMixin",
+    "LivingEntityRendererMixin",
+    "MinecraftMixin"
   ]
 }

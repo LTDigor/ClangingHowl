@@ -15,4 +15,10 @@ public interface ICHCap {
     void setMoving(boolean moving);
     float technoResist();
     void setTechnoResist(float resist);
+    int getEnlightenedTick();
+    void setEnlightenedTick(int tick);
+    int getTicksInAir();
+    void setTicksInAir(int tick);
+    int getFlashTick();
+    void setFlashTick(int tick);
 }

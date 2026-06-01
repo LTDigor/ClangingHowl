@@ -1,16 +1,19 @@
 package com.mongoose.clanginghowl.common.blocks.entities;
 
+import com.mongoose.clanginghowl.client.particles.CHParticleTypes;
 import com.mongoose.clanginghowl.common.items.energy.IEnergyItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -59,6 +62,14 @@ public class ChargingStationBlockEntity extends BlockEntity {
             if (!tool.isEmpty() && tool.getItem() instanceof IEnergyItem && !IEnergyItem.isFull(tool)) {
                 if (this.level.getGameTime() % 20 == 0) {
                     IEnergyItem.powerItem(tool, 4);
+                }
+                if (this.level instanceof ServerLevel serverLevel) {
+                    if (serverLevel.getGameTime() % 5 == 0) {
+                        for (int i = 0; i < 8; ++i) {
+                            Vec3 vec3 = this.getBlockPos().getCenter().offsetRandom(serverLevel.getRandom(), 0.5F);
+                            serverLevel.sendParticles(CHParticleTypes.ENERGY_PARTICLE.get(), vec3.x, vec3.y + 0.5F, vec3.z, 1, 0, 0, 0, 0.0F);
+                        }
+                    }
                 }
             }
         }

@@ -1,0 +1,10 @@
+{
+  "parent": "clanginghowl:block/template_bottom_top_side",
+  "textures": {
+    "bottom": "clanginghowl:block/steel_bridge_slab_top",
+    "side": "clanginghowl:block/steel_bridge_slab",
+    "top": "clanginghowl:block/steel_bridge_slab_top",
+    "particle": "clanginghowl:block/steel_bridge_slab"
+  },
+  "render_type": "cutout"
+}

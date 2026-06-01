@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,6 +28,24 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
     protected void isShaking(T p_115304_, CallbackInfoReturnable<Boolean> callback) {
         if (CHCapHelper.getShakeTime(p_115304_) > 0) {
             callback.setReturnValue(true);
+        }
+    }
+
+    @Inject(method = {"getWhiteOverlayProgress(Lnet/minecraft/world/entity/LivingEntity;F)F"}, at = @At(value = "HEAD"), cancellable = true)
+    public void getWhiteOverlayProgress(T p_115334_, float p_115335_, CallbackInfoReturnable<Float> cir) {
+        if (p_115334_ != null) {
+            if (CHCapHelper.isFlashing(p_115334_)) {
+                cir.setReturnValue(1.0F);
+            }
+        }
+    }
+
+    @Inject(method = "getOverlayCoords", at = @At(value = "HEAD"), cancellable = true)
+    private static void overlay(LivingEntity entity, float f, CallbackInfoReturnable<Integer> cir) {
+        if (entity != null) {
+            if (CHCapHelper.isFlashing(entity)) {
+                cir.setReturnValue(OverlayTexture.pack(OverlayTexture.u(1.0F), 10));
+            }
         }
     }
 }

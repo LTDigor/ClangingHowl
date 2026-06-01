@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "enabled=false": {
+      "model": "clanginghowl:block/broken_crystal_former_inactive"
+    },
+    "enabled=true": {
+      "model": "clanginghowl:block/broken_crystal_former"
+    }
+  }
+}

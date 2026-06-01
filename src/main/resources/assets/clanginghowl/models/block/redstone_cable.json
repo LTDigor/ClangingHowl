@@ -1,0 +1,6 @@
+{
+	"parent": "clanginghowl:block/template_cable",
+	"textures": {
+		"cable": "clanginghowl:block/redstone_cable"
+	}
+}

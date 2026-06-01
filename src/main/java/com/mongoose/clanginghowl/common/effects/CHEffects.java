@@ -30,6 +30,11 @@ public class CHEffects {
                     .addAttributeModifier(Attributes.MAX_HEALTH, CHUUIDUtil.uuidString("effect.clanginghowl.sawing_up_health.health"),
                             -0.05D, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
+    public static final RegistryObject<MobEffect> WEAKENED_DEFENSE = EFFECTS.register("weakened_defense",
+            () -> new CHBaseEffect(MobEffectCategory.HARMFUL, 0x831f33)
+                    .addAttributeModifier(Attributes.ARMOR, CHUUIDUtil.uuidString("effect.clanginghowl.weakened_defense.armor"),
+                            -0.4D, AttributeModifier.Operation.MULTIPLY_TOTAL));
+
     public static final RegistryObject<MobEffect> DEEP_BURN = EFFECTS.register("deep_burn",
             () -> new CHBaseEffect(MobEffectCategory.HARMFUL, 0));
 
@@ -42,6 +47,9 @@ public class CHEffects {
     public static final RegistryObject<MobEffect> BEYOND_FLESH = EFFECTS.register("beyond_flesh",
             () -> new CHBaseEffect(MobEffectCategory.HARMFUL, 0));
 
+    public static final RegistryObject<MobEffect> ATTRACTION = EFFECTS.register("attraction",
+            () -> new CHBaseEffect(MobEffectCategory.NEUTRAL, 0xe36f6f));
+
     public static final RegistryObject<MobEffect> OVERDRIVE = EFFECTS.register("overdrive",
             () -> new CHBaseEffect(MobEffectCategory.BENEFICIAL, 0)
                     .addAttributeModifier(Attributes.MOVEMENT_SPEED, CHUUIDUtil.uuidString("effect.clanginghowl.overdrive.movement"),
@@ -49,4 +57,6 @@ public class CHEffects {
                     .addAttributeModifier(Attributes.ATTACK_DAMAGE, CHUUIDUtil.uuidString("effect.clanginghowl.overdrive.attack"),
                             4.0D, AttributeModifier.Operation.ADDITION));
 
+    public static final RegistryObject<MobEffect> ENLIGHTENED = EFFECTS.register("enlightened",
+            () -> new CHBaseEffect(MobEffectCategory.HARMFUL, 0xb9e25b));
 }

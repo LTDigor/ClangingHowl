@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "clanginghowl:block/steel_bridge_slab"
+    },
+    "type=double": {
+      "model": "clanginghowl:block/steel_bridge_slab_full"
+    },
+    "type=top": {
+      "model": "clanginghowl:block/steel_bridge_slab_top"
+    }
+  }
+}

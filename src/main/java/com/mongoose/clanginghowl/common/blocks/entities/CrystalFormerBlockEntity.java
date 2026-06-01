@@ -4,6 +4,7 @@ import com.mongoose.clanginghowl.common.blocks.CHBlocks;
 import com.mongoose.clanginghowl.common.blocks.CrystalFormerBlock;
 import com.mongoose.clanginghowl.common.blocks.ExEnergyClusterBlock;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -49,8 +50,7 @@ public class CrystalFormerBlockEntity extends BlockEntity {
                         this.tickTime = 0;
                     }
                     if (this.tickTime >= 2000) {
-                        if (above.is(CHBlocks.EXTRATERRESTRIAL_ENERGY_CLUSTER.get()) && canGrow(age, temperature)) {
-                            ExEnergyClusterBlock block = (ExEnergyClusterBlock) above.getBlock();
+                        if (above.getBlock() instanceof ExEnergyClusterBlock block && above.hasProperty(ExEnergyClusterBlock.FACING) && above.getValue(ExEnergyClusterBlock.FACING) == Direction.UP && canGrow(age, temperature)) {
                             block.growCrystal(above, this.level, this.worldPosition.above());
                             this.tickTime = 0;
                         } else if (above.canBeReplaced() && temperature <= 1.5F) {

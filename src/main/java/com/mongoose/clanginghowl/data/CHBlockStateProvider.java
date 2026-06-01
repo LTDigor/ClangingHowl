@@ -21,14 +21,20 @@ public class CHBlockStateProvider extends BlockStateProvider {
         simpleBlockWithItem(CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE.get());
         simpleBlockWithItem(CHBlocks.EXTRATERRESTRIAL_STONE_BRICKS.get());
         simpleBlockWithItem(CHBlocks.CARVED_EXTRATERRESTRIAL_STONE_BRICKS.get());
+        simpleBlockWithItem(CHBlocks.BURNISHED_EXTRATERRESTRIAL_STONE.get());
         simpleBlockWithItem(CHBlocks.RAW_EXTRATERRESTRIAL_STEEL_BLOCK.get());
         simpleBlockWithItem(CHBlocks.EXTRATERRESTRIAL_STEEL_BLOCK.get());
+        simpleBlockWithItem(CHBlocks.EXTRATERRESTRIAL_ENERGY_CRYSTAL_BLOCK.get());
         simpleBlockWithItem(CHBlocks.STEEL_PLATE_BLOCK.get());
         simpleBlockWithItem(CHBlocks.DAMAGED_STEEL_PLATE_BLOCK.get());
+        simpleBlockWithItem(CHBlocks.CORRUGATED_STEEL_BLOCK.get());
+        simpleBlockWithItem(CHBlocks.FIREPROOF_STEEL_BLOCK.get());
+        simpleBlockWithItem(CHBlocks.CARVED_FIREPROOF_STEEL_BLOCK.get());
         simpleBlockWithItem(CHBlocks.METEORITE_STEEL_ORE.get());
         simpleBlockWithItem(CHBlocks.EXTRATERRESTRIAL_STEEL_ORE.get());
         simpleBlockWithItem(CHBlocks.CALCITE_TILES.get());
         simpleBlockWithItem(CHBlocks.CRACKED_CALCITE_TILES.get());
+//        simpleBlockWithItem(CHBlocks.REDSTONE_CABLE_DISTRIBUTOR.get());
         simpleBlockWithItem(CHBlocks.FROZEN_TECHNOFLESH_BLOCK.get());
         simpleBlockWithItem(CHBlocks.TECHNOFLESH_NEST.get());
 
@@ -36,6 +42,7 @@ public class CHBlockStateProvider extends BlockStateProvider {
         crossBlockWithItem(CHBlocks.HANGING_TECHNOFLESH.get());
 
         doorBlockWithRenderType((DoorBlock) CHBlocks.STEEL_DOOR.get(), ClangingHowl.location("block/steel_door_bottom"), ClangingHowl.location("block/steel_door_top"), "translucent");
+        doorBlockWithRenderType((DoorBlock) CHBlocks.FIREPROOF_STEEL_DOOR.get(), ClangingHowl.location("block/fireproof_steel_door_bottom"), ClangingHowl.location("block/fireproof_steel_door_top"), "translucent");
 
         sideBottomTopColumnBlock((RotatedPillarBlock) CHBlocks.CARVED_STEEL_PLATE_BLOCK.get(), ClangingHowl.location("block/carved_steel_plate_block_top"), ClangingHowl.location("block/carved_steel_plate_block"), ClangingHowl.location("block/carved_steel_plate_block_bottom"));
         sideBottomTopColumnBlock((RotatedPillarBlock) CHBlocks.DAMAGED_CARVED_STEEL_PLATE_BLOCK.get(), ClangingHowl.location("block/damaged_carved_steel_plate_block_top"), ClangingHowl.location("block/damaged_carved_steel_plate_block"), ClangingHowl.location("block/damaged_carved_steel_plate_block_bottom"));
@@ -47,6 +54,7 @@ public class CHBlockStateProvider extends BlockStateProvider {
         slabBlockWithItem((SlabBlock) CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE_SLAB.get(), ClangingHowl.location("block/smooth_extraterrestrial_stone"));
         slabBlockWithItem((SlabBlock) CHBlocks.EXTRATERRESTRIAL_STONE_BRICK_SLAB.get(), ClangingHowl.location("block/extraterrestrial_stone_bricks"));
         slabBlockWithItem((SlabBlock) CHBlocks.CARVED_STEEL_PLATE_SLAB.get(), ClangingHowl.location("block/carved_steel_plate_block"));
+        slabBlockWithItem((SlabBlock) CHBlocks.CARVED_FIREPROOF_STEEL_SLAB.get(), ClangingHowl.location("block/carved_fireproof_steel_block"));
         slabBlockWithItem((SlabBlock) CHBlocks.CALCITE_TILE_SLAB.get(), ClangingHowl.location("block/calcite_tiles"));
         slabBlockWithItem((SlabBlock) CHBlocks.TECHNOFLESH_SLAB.get(), ClangingHowl.location("block/technoflesh_block_ordinary"));
 
@@ -54,13 +62,17 @@ public class CHBlockStateProvider extends BlockStateProvider {
         stairsBlockWithItem((StairBlock) CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE_STAIRS.get(), ClangingHowl.location("block/smooth_extraterrestrial_stone"));
         stairsBlockWithItem((StairBlock) CHBlocks.EXTRATERRESTRIAL_STONE_BRICK_STAIRS.get(), ClangingHowl.location("block/extraterrestrial_stone_bricks"));
         stairsBlockWithItem((StairBlock) CHBlocks.CARVED_STEEL_PLATE_STAIRS.get(), ClangingHowl.location("block/carved_steel_plate_block"));
+        stairsBlockWithItem((StairBlock) CHBlocks.CARVED_FIREPROOF_STEEL_STAIRS.get(), ClangingHowl.location("block/carved_fireproof_steel_block"));
         stairsBlockWithItem((StairBlock) CHBlocks.CALCITE_TILE_STAIRS.get(), ClangingHowl.location("block/calcite_tiles"));
 
         wallBlockWithItem((WallBlock) CHBlocks.EXTRATERRESTRIAL_STONE_WALL.get(), ClangingHowl.location("block/extraterrestrial_stone"));
         wallBlockWithItem((WallBlock) CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE_WALL.get(), ClangingHowl.location("block/smooth_extraterrestrial_stone"));
         wallBlockWithItem((WallBlock) CHBlocks.EXTRATERRESTRIAL_STONE_BRICK_WALL.get(), ClangingHowl.location("block/extraterrestrial_stone_bricks"));
 
+        paneBlockWithItemAndRender(CHBlocks.EXTRATERRESTRIAL_STEEL_GRATE_PANEL.get(), ClangingHowl.location("block/extraterrestrial_steel_grate"), "translucent");
+
         trapdoorBlockWithItem((TrapDoorBlock) CHBlocks.STEEL_TRAPDOOR.get(), ClangingHowl.location("block/steel_trapdoor"), true);
+        trapdoorBlockWithItemAndRender((TrapDoorBlock) CHBlocks.FIREPROOF_STEEL_TRAPDOOR.get(), ClangingHowl.location("block/fireproof_steel_trapdoor"), true, new ResourceLocation("translucent"));
     }
 
     public ModelFile cubeAllWithRender(Block block, String renderType) {
@@ -236,6 +248,11 @@ public class CHBlockStateProvider extends BlockStateProvider {
 
     public void trapdoorBlockWithItem(TrapDoorBlock block, ResourceLocation texture, boolean orientable) {
         trapdoorBlock(block, texture, orientable);
+        simpleBlockItem(block, models().trapdoorOrientableBottom(name(block), texture));
+    }
+
+    public void trapdoorBlockWithItemAndRender(TrapDoorBlock block, ResourceLocation texture, boolean orientable, ResourceLocation render) {
+        trapdoorBlockWithRenderType(block, texture, orientable, render);
         simpleBlockItem(block, models().trapdoorOrientableBottom(name(block), texture));
     }
 

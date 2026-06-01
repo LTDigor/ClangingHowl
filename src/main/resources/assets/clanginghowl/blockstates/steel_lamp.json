@@ -1,0 +1,56 @@
+{
+  "variants": {
+    "enabled=true,facing=down": {
+      "model": "clanginghowl:block/steel_lamp",
+      "x": 180
+    },
+    "enabled=true,facing=east": {
+      "model": "clanginghowl:block/steel_lamp",
+      "x": 90,
+      "y": 90
+    },
+    "enabled=true,facing=north": {
+      "model": "clanginghowl:block/steel_lamp",
+      "x": 90
+    },
+    "enabled=true,facing=south": {
+      "model": "clanginghowl:block/steel_lamp",
+      "x": 90,
+      "y": 180
+    },
+    "enabled=true,facing=up": {
+      "model": "clanginghowl:block/steel_lamp"
+    },
+    "enabled=true,facing=west": {
+      "model": "clanginghowl:block/steel_lamp",
+      "x": 90,
+      "y": 270
+    },
+    "enabled=false,facing=down": {
+      "model": "clanginghowl:block/steel_lamp_off",
+      "x": 180
+    },
+    "enabled=false,facing=east": {
+      "model": "clanginghowl:block/steel_lamp_off",
+      "x": 90,
+      "y": 90
+    },
+    "enabled=false,facing=north": {
+      "model": "clanginghowl:block/steel_lamp_off",
+      "x": 90
+    },
+    "enabled=false,facing=south": {
+      "model": "clanginghowl:block/steel_lamp_off",
+      "x": 90,
+      "y": 180
+    },
+    "enabled=false,facing=up": {
+      "model": "clanginghowl:block/steel_lamp_off"
+    },
+    "enabled=false,facing=west": {
+      "model": "clanginghowl:block/steel_lamp_off",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

@@ -22,6 +22,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.HumanoidArm;
@@ -181,7 +182,10 @@ public class FlamethrowerItem extends Item implements IFuel{
                     if (target != null && !target.isUnderWater()) {
                         DamageSource damageSource = CHDamageSource.fireStream(livingEntity, livingEntity);
                         int enchantment = itemStack.getEnchantmentLevel(CHEnchantments.NAPALM_STREAM.get());
-                        if (target.hurt(damageSource, 1.5F + enchantment)){
+                        if (itemStack.getEnchantmentLevel(CHEnchantments.SOUL_BURNER.get()) > 0) {
+                            enchantment += 1;
+                        }
+                        if (target.hurt(damageSource, 2.5F + enchantment)){
                             if (target instanceof LivingEntity livingEntity1) {
                                 livingEntity1.addEffect(new MobEffectInstance(CHEffects.DEEP_BURN.get(), 500));
                             }
@@ -193,12 +197,21 @@ public class FlamethrowerItem extends Item implements IFuel{
                                     livingEntity1.addEffect(new MobEffectInstance(CHEffects.INTERNAL_HEAT.get(), 500));
                                 }
                             }
+                            if (itemStack.getEnchantmentLevel(CHEnchantments.SOUL_BURNER.get()) > 0) {
+                                if (target instanceof LivingEntity livingEntity1) {
+                                    livingEntity1.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40));
+                                }
+                            }
                         }
                     }
                 }
             }
         }
-        this.dragonBreathAttack(CHParticleTypes.FLAMETHROWER_FLAME.get(), livingEntity, ((double) range / 10) * 0.5D);
+        ParticleOptions particleOptions = CHParticleTypes.FLAMETHROWER_FLAME.get();
+        if (itemStack.getEnchantmentLevel(CHEnchantments.SOUL_BURNER.get()) > 0) {
+            particleOptions = CHParticleTypes.FLAMETHROWER_SOUL_FLAME.get();
+        }
+        this.dragonBreathAttack(particleOptions, livingEntity, ((double) range / 10) * 0.5D);
     }
 
     public List<Entity> getBreathTarget(LivingEntity livingEntity, double range) {
@@ -284,14 +297,28 @@ public class FlamethrowerItem extends Item implements IFuel{
                                     target.setSecondsOnFire(fireSeconds);
                                 }
                             }
-                            double power = target instanceof Projectile ? 6.0D : 3.0D;
-                            MobUtil.knockBack(target, player, power, 0.2D, power);
+                            if (target instanceof Projectile projectile) {
+                                MobUtil.deflectProjectile(projectile, projectile.getOwner(), player);
+                            } else {
+                                double power = 3.0D;
+                                MobUtil.knockBack(target, player, power, 0.2D, power);
+                            }
                         }
                     }
                 }
                 this.dragonBreathAttack(CHParticleTypes.FLAMETHROWER_BURST.get(), player, 30, 0.1F + ((double) range / 10));
-                player.getCooldowns().addCooldown(this, 35);
-                level.playSound(null, player.getX(), player.getY(), player.getZ(), CHSounds.FLAMETHROWER_ACTIVATION.get(), player.getSoundSource(), 1.0F, 1.0F);
+                Vec3 look = player.getLookAngle();
+
+                double dist = 3.0D;
+                double px = player.getX() + look.x * dist;
+                double py = player.getEyeY() + look.y * dist;
+                double pz = player.getZ() + look.z * dist;
+                double offset = 0.15D;
+                if (level instanceof ServerLevel serverLevel) {
+                    serverLevel.sendParticles(CHParticleTypes.GAS_SURGE.get(), px + offset, py + offset, pz + offset, 1, 0, 0, 0, 0);
+                }
+                player.getCooldowns().addCooldown(this, 15);
+                level.playSound(null, player.getX(), player.getY(), player.getZ(), CHSounds.FLAMETHROWER_EMISSION.get(), player.getSoundSource(), 1.0F, 1.0F);
             } else {
                 player.startUsingItem(hand);
                 level.playSound(null, player.getX(), player.getY(), player.getZ(), CHSounds.FLAMETHROWER_ACTIVATION.get(), player.getSoundSource(), 0.4F, 1.0F);

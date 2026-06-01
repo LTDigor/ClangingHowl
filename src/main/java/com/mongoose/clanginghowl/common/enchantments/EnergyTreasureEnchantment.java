@@ -4,6 +4,7 @@ import com.mongoose.clanginghowl.common.items.energy.ChainsawItem;
 import com.mongoose.clanginghowl.common.items.energy.ChainswordItem;
 import com.mongoose.clanginghowl.common.items.energy.DrillItem;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -27,6 +28,13 @@ public class EnergyTreasureEnchantment extends Enchantment {
         return false;
     }
 
+    public float getDamageBonus(int level, MobType mobType, ItemStack itemStack) {
+        if (this == CHEnchantments.EXCEEDING_THE_LIMIT.get()) {
+            return level * 0.5F;
+        }
+        return super.getDamageBonus(level, mobType, itemStack);
+    }
+
     @Override
     protected boolean checkCompatibility(Enchantment enchantment) {
         if (this == CHEnchantments.TUNNEL_DRILLER.get()) {
@@ -39,9 +47,9 @@ public class EnergyTreasureEnchantment extends Enchantment {
     public boolean canApplyAtEnchantingTable(ItemStack stack) {
         if (this == CHEnchantments.TUNNEL_DRILLER.get()) {
             return stack.getItem() instanceof DrillItem;
-        } else if (this == CHEnchantments.OVERDRIVE.get()) {
+        } else if (this == CHEnchantments.OVERDRIVE.get() || this == CHEnchantments.FULL_POWER.get()) {
             return stack.getItem() instanceof ChainsawItem;
-        } else if (this == CHEnchantments.KILLER_CHARGE.get()) {
+        } else if (this == CHEnchantments.KILLER_CHARGE.get() || this == CHEnchantments.EXCEEDING_THE_LIMIT.get()) {
             return stack.getItem() instanceof ChainswordItem;
         }
         return super.canApplyAtEnchantingTable(stack);

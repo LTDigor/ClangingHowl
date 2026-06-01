@@ -28,7 +28,7 @@ public class ExStoneBlock extends Block {
     }
 
     private static boolean isEnergyCluster(BlockState p_154649_) {
-        return p_154649_.getBlock() instanceof ExEnergyClusterBlock || p_154649_.getBlock() instanceof HugeExEnergyClusterBlock;
+        return p_154649_.getBlock() instanceof ExEnergyClusterBlock || p_154649_.getBlock() instanceof HugeExEnergyClusterBlock || p_154649_.is(CHBlocks.EXTRATERRESTRIAL_ENERGY_CRYSTAL_BLOCK.get());
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_56651_) {

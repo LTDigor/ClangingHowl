@@ -1,0 +1,9 @@
+{
+  "parent": "clanginghowl:block/cube_bottom_top_inner_faces",
+  "textures": {
+    "particle": "clanginghowl:block/consummate_nest",
+    "bottom": "clanginghowl:block/consummate_nest_bottom",
+    "side": "clanginghowl:block/consummate_nest",
+    "top": "clanginghowl:block/consummate_nest_top"
+  }
+}

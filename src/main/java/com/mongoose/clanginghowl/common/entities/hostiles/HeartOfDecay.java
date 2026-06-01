@@ -22,6 +22,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
@@ -34,6 +35,7 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WallClimberNavigation;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.*;
 import net.minecraft.world.entity.npc.AbstractVillager;
@@ -49,7 +51,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
 
-public class HeartOfDecay extends Spider implements RangedAttackMob {
+public class HeartOfDecay extends Spider implements RangedAttackMob, ITFlesh {
     private static final EntityDataAccessor<Integer> ANIM_STATE = SynchedEntityData.defineId(HeartOfDecay.class, EntityDataSerializers.INT);
     public static AttributeModifier SHOOT_SPEED_MODIFIER = new AttributeModifier(CHUUIDUtil.createUUID("entity.clanginghowl.heart_of_decay.immobile"), "Shooting speed penalty", -1.0D, AttributeModifier.Operation.ADDITION);
     public static String IDLE = "idle";
@@ -83,7 +85,7 @@ public class HeartOfDecay extends Spider implements RangedAttackMob {
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new HoDTargetGoal<>(this, Player.class));
-        this.targetSelector.addGoal(2, new HoDTargetGoal<>(this, LivingEntity.class, livingEntity -> MobUtil.isTechnoConvert(livingEntity) && !livingEntity.hasEffect(CHEffects.BEYOND_FLESH.get())));
+        this.targetSelector.addGoal(2, new HoDTargetGoal<>(this, LivingEntity.class, livingEntity -> MobUtil.isTechnoConvert(livingEntity) && livingEntity.getMaxHealth() <= 25.0D && !livingEntity.hasEffect(CHEffects.BEYOND_FLESH.get())));
         this.targetSelector.addGoal(3, new HoDTargetGoal<>(this, IronGolem.class));
     }
 
@@ -113,6 +115,16 @@ public class HeartOfDecay extends Spider implements RangedAttackMob {
     }
 
     @Override
+    public int getXPReward() {
+        return this.xpReward;
+    }
+
+    @Override
+    public void setXPReward(int xpReward) {
+        this.xpReward = xpReward;
+    }
+
+    @Override
     public boolean isAlliedTo(Entity entity) {
         if (entity == null) {
             return false;
@@ -125,6 +137,15 @@ public class HeartOfDecay extends Spider implements RangedAttackMob {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public boolean hurt(DamageSource p_21016_, float p_21017_) {
+        boolean flag = super.hurt(p_21016_, p_21017_);
+        if (flag) {
+            this.alertAllies();
+        }
+        return flag;
     }
 
     public static boolean checkHoDSpawnRules(EntityType<? extends Monster> entityType, ServerLevelAccessor levelAccessor, MobSpawnType spawnType, BlockPos blockPos, RandomSource randomSource) {
@@ -250,8 +271,12 @@ public class HeartOfDecay extends Spider implements RangedAttackMob {
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
+        SpawnGroupData data = super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
         this.setPose(Pose.EMERGING);
-        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+        if (this.getFirstPassenger() instanceof AbstractSkeleton) {
+            this.getFirstPassenger().discard();
+        }
+        return data;
     }
 
     @Override
@@ -327,15 +352,30 @@ public class HeartOfDecay extends Spider implements RangedAttackMob {
     }
 
     @Override
+    public void swing(InteractionHand p_21007_) {
+        super.swing(p_21007_);
+        this.attackTick = 10;
+        this.setAnimationState(ATTACK);
+    }
+
+    @Override
     public boolean doHurtTarget(Entity entityIn) {
-        boolean flag = super.doHurtTarget(entityIn);
+        boolean flag = false;
+
+        if (entityIn instanceof LivingEntity livingEntity) {
+            if (MobUtil.isTechnoConvert(livingEntity)) {
+                flag = entityIn.hurt(this.damageSources().mobAttack(this), 2.0F);
+            }
+        }
+
+        if (!flag) {
+            flag = super.doHurtTarget(entityIn);
+        }
 
         if (!this.level().isClientSide) {
-            if (flag) {
-                this.attackTick = 10;
-                this.setAnimationState(ATTACK);
-                if (entityIn instanceof LivingEntity livingEntity) {
-                    if (MobUtil.isTechnoConvert(livingEntity)) {
+            if (entityIn instanceof LivingEntity livingEntity) {
+                if (MobUtil.isTechnoConvert(livingEntity) && livingEntity.getMaxHealth() <= 25.0F) {
+                    if (flag) {
                         this.playSound(CHSounds.INFECT.get(), 1.0F, 1.0F);
                         int time = 1000;
                         if (livingEntity instanceof Zombie) {
@@ -344,6 +384,8 @@ public class HeartOfDecay extends Spider implements RangedAttackMob {
                             time = 12000;
                         } else if (livingEntity instanceof AbstractIllager) {
                             time = 500;
+                        } else if (livingEntity instanceof Animal) {
+                            time *= 2;
                         }
                         livingEntity.addEffect(new MobEffectInstance(CHEffects.BEYOND_FLESH.get(), time, 0, false, false));
                         this.discard();

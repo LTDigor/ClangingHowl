@@ -14,6 +14,10 @@ public interface IEnergyItem {
         return 4;
     }
 
+    default boolean canCharge() {
+        return true;
+    }
+
     default void consumeEnergy(ItemStack itemStack) {
         int amount = this.getConsumption(itemStack) - itemStack.getEnchantmentLevel(CHEnchantments.ENERGY_EFFICIENCY.get());
         IEnergyItem.decreaseEnergy(itemStack, amount);
@@ -110,7 +114,7 @@ public interface IEnergyItem {
         if (!isEmpty(battery)) {
             powerItem(charging, 1);
             decreaseEnergy(battery, 1);
-            if (isEmpty(battery)) {
+            if (isEmpty(battery) && !BatteryItem.isPersistant(battery)) {
                 battery.shrink(1);
             }
         }

@@ -1,5 +1,6 @@
 package com.mongoose.clanginghowl.data;
 
+import com.mongoose.clanginghowl.common.blocks.BlazeFuelCylinderBlock;
 import com.mongoose.clanginghowl.common.blocks.CHBlocks;
 import com.mongoose.clanginghowl.common.blocks.ExEnergyClusterBlock;
 import com.mongoose.clanginghowl.common.blocks.HugeExEnergyClusterBlock;
@@ -22,7 +23,6 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
@@ -35,6 +35,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.function.BiConsumer;
 
@@ -119,7 +120,13 @@ public class CHBlockLootProvider extends BlockLootSubProvider {
         this.add(CHBlocks.EXTRATERRESTRIAL_STEEL_ORE.get(), (p_124076_) -> {
             return createOreDrop(p_124076_, CHItems.EXTRATERRESTRIAL_STEEL.get());
         });
+        this.add(CHBlocks.BLAZE_FUEL_CYLINDER_BLOCK.get(), (p_248918_) -> {
+            return LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(this.applyExplosionDecay(CHBlocks.BLAZE_FUEL_CYLINDER_BLOCK.get(), LootItem.lootTableItem(p_248918_).apply(List.of(2, 3), (p_251952_) -> {
+                return SetItemCountFunction.setCount(ConstantValue.exactly((float) p_251952_)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(p_248918_).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(BlazeFuelCylinderBlock.CYLINDERS, p_251952_)));
+            }))));
+        });
         this.add(CHBlocks.BIG_CRYOGENIC_ICICLE.get(), this.createBigIcicle());
+        this.add(CHBlocks.CRYOGENIC_FROST.get(), this.dropSilkTouchOrShears(CHBlocks.CRYOGENIC_FROST.get()));
         this.add(CHBlocks.TECHNOFLESH_MEMBRANE.get(), this.dropSilkTouchOrShears(CHBlocks.TECHNOFLESH_MEMBRANE.get()));
         this.add(CHBlocks.HANGING_TECHNOFLESH.get(), this.dropSilkTouchOrShears(CHBlocks.HANGING_TECHNOFLESH.get()));
         this.add(CHBlocks.BIG_HANGING_TECHNOFLESH.get(), this.createBigHangingFlesh());

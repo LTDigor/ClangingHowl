@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "clanginghowl:research_station",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 917312875,
+    "spacing": 40,
+    "separation": 5,
+    "type": "minecraft:random_spread"
+  }
+}

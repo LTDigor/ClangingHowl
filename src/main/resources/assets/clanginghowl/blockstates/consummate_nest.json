@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "consummate_nest_state=active": {
+      "model": "clanginghowl:block/consummate_nest_active"
+    },
+    "consummate_nest_state=cooldown": {
+      "model": "clanginghowl:block/consummate_nest_dormant"
+    },
+    "consummate_nest_state=ejecting_reward": {
+      "model": "clanginghowl:block/consummate_nest_ejecting_reward"
+    },
+    "consummate_nest_state=inactive": {
+      "model": "clanginghowl:block/consummate_nest"
+    },
+    "consummate_nest_state=waiting_for_players": {
+      "model": "clanginghowl:block/consummate_nest_active"
+    },
+    "consummate_nest_state=waiting_for_reward_ejection": {
+      "model": "clanginghowl:block/consummate_nest_active"
+    }
+  }
+}

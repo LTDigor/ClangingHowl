@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "axis=x,powered=false": {
+      "model": "clanginghowl:block/redstone_cable",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y,powered=false": {
+      "model": "clanginghowl:block/redstone_cable"
+    },
+    "axis=z,powered=false": {
+      "model": "clanginghowl:block/redstone_cable",
+      "x": 90
+    },
+    "axis=x,powered=true": {
+      "model": "clanginghowl:block/redstone_cable_powered",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y,powered=true": {
+      "model": "clanginghowl:block/redstone_cable_powered"
+    },
+    "axis=z,powered=true": {
+      "model": "clanginghowl:block/redstone_cable_powered",
+      "x": 90
+    }
+  }
+}

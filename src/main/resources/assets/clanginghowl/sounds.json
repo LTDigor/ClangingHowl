@@ -24,6 +24,14 @@
     ],
     "subtitle": "subtitle.clanginghowl.techno_flesh_hurt"
   },
+  "techno_flesh_attack": {
+    "sounds": [
+      {
+        "name": "clanginghowl:entity/techno_flesh_attack"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.techno_flesh_attack"
+  },
   "techno_flesh_step": {
     "sounds": [
       {
@@ -56,6 +64,55 @@
       }
     ],
     "subtitle": "subtitle.clanginghowl.heart_of_decay_death"
+  },
+  "hematoma_step": {
+    "sounds": [
+      {
+        "name": "clanginghowl:entity/hematoma_steps_1"
+      },
+      {
+        "name": "clanginghowl:entity/hematoma_steps_2"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.hematoma_step"
+  },
+  "prowler_step": {
+    "sounds": [
+      {
+        "name": "clanginghowl:entity/prowler_steps_1"
+      },
+      {
+        "name": "clanginghowl:entity/prowler_steps_2"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.prowler_step"
+  },
+  "carcass_spit": {
+    "sounds": [
+      {
+        "name": "clanginghowl:entity/carcass_spit"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.carcass_spit"
+  },
+  "carcass_quake": {
+    "sounds": [
+      {
+        "name": "clanginghowl:entity/carcass_earthquake"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.carcass_quake"
+  },
+  "carcass_step": {
+    "sounds": [
+      {
+        "name": "clanginghowl:entity/carcass_step_1"
+      },
+      {
+        "name": "clanginghowl:entity/carcass_step_2"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.carcass_step"
   },
   "flesh_whipping": {
     "sounds": [
@@ -112,6 +169,30 @@
       }
     ],
     "subtitle": "subtitle.clanginghowl.flesh_tear"
+  },
+  "small_meteorite_landing": {
+    "sounds": [
+      {
+        "name": "clanginghowl:entity/small_meteorite_landing"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.small_meteorite_landing"
+  },
+  "smoke_release": {
+    "sounds": [
+      {
+        "name": "clanginghowl:entity/smoke_release"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.smoke_release"
+  },
+  "howl_of_technoflesh": {
+    "sounds": [
+      {
+        "name": "clanginghowl:entity/howl_of_technoflesh"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.howl_of_technoflesh"
   },
   "drilling": {
     "sounds": [
@@ -194,6 +275,30 @@
     ],
     "subtitle": "subtitle.clanginghowl.flamethrower_burns"
   },
+  "flamethrower_emission": {
+    "sounds": [
+      {
+        "name": "clanginghowl:item/flamethrower/emission"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.flamethrower_emission"
+  },
+  "x_ray_activation": {
+    "sounds": [
+      {
+        "name": "clanginghowl:item/x_ray/activation"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.x_ray_activation"
+  },
+  "energy_barrier_impact": {
+    "sounds": [
+      {
+        "name": "clanginghowl:item/barrier/impact"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.energy_barrier_impact"
+  },
   "electric_shock": {
     "sounds": [
       {
@@ -201,5 +306,97 @@
       }
     ],
     "subtitle": "subtitle.clanginghowl.electric_shock"
+  },
+  "malfunctioning_electrics": {
+    "sounds": [
+      {
+        "name": "clanginghowl:block/malfunctioning_electrics_1"
+      },
+      {
+        "name": "clanginghowl:block/malfunctioning_electrics_2"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.malfunctioning_electrics"
+  },
+  "consummate_nest_ambient": {
+    "sounds": [
+      {
+        "name": "clanginghowl:block/trial_spawner/idle1"
+      },
+      {
+        "name": "clanginghowl:block/trial_spawner/idle2"
+      },
+      {
+        "name": "clanginghowl:block/trial_spawner/idle3"
+      },
+      {
+        "name": "clanginghowl:block/trial_spawner/idle4"
+      },
+      {
+        "name": "clanginghowl:block/trial_spawner/idle5"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.consummate_nest_ambient"
+  },
+  "consummate_nest_detect_player": {
+    "sounds": [
+      {
+        "name": "clanginghowl:block/techno_impulse"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.consummate_nest_detect_player"
+  },
+  "consummate_nest_spawn": {
+    "sounds": [
+      {
+        "name": "clanginghowl:block/techno_impulse"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.consummate_nest_spawn"
+  },
+  "consummate_nest_open": {
+    "sounds": [
+      {
+        "name": "clanginghowl:block/trial_spawner/open_shutter"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.consummate_nest_open"
+  },
+  "consummate_nest_close": {
+    "sounds": [
+      {
+        "name": "clanginghowl:block/trial_spawner/close_shutter"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.consummate_nest_close"
+  },
+  "consummate_nest_eject_item": {
+    "sounds": [
+      {
+        "name": "clanginghowl:block/trial_spawner/eject_item"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.consummate_nest_eject_item"
+  },
+  "meteor_shower_fly": {
+    "sounds": [
+      {
+        "name": "clanginghowl:event/meteor_flying"
+      }
+    ]
+  },
+  "meteor_shower_explode": {
+    "sounds": [
+      {
+        "name": "clanginghowl:event/meteor_land"
+      }
+    ]
+  },
+  "meteor_shower_music": {
+    "sounds": [
+      {
+        "name": "clanginghowl:event/anluka_meteor_shower"
+      }
+    ]
   }
 }

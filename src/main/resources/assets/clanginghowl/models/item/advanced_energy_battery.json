@@ -1,0 +1,20 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "clanginghowl:item/advanced_energy_battery_discharged"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "active": 0.00000
+      },
+      "model": "clanginghowl:item/advanced_energy_battery_discharged"
+    },
+    {
+      "predicate": {
+        "active": 1.00000
+      },
+      "model": "clanginghowl:item/advanced_energy_battery_active"
+    }
+  ]
+}

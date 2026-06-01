@@ -47,6 +47,11 @@ public class ElectricSplashParticle extends GroundCircleParticle {
       }
    }
 
+   @Override
+   public boolean shouldCull() {
+      return false;
+   }
+
    public static class Provider implements ParticleProvider<ElectricSplashParticleOption> {
       private final SpriteSet sprite;
 

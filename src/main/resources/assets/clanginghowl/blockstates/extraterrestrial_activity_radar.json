@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=east,powered=true": {
+      "model": "clanginghowl:block/extraterrestrial_activity_radar",
+      "y": 270
+    },
+    "facing=north,powered=true": {
+      "model": "clanginghowl:block/extraterrestrial_activity_radar",
+      "y": 180
+    },
+    "facing=south,powered=true": {
+      "model": "clanginghowl:block/extraterrestrial_activity_radar"
+    },
+    "facing=west,powered=true": {
+      "model": "clanginghowl:block/extraterrestrial_activity_radar",
+      "y": 90
+    },
+    "facing=east,powered=false": {
+      "model": "clanginghowl:block/extraterrestrial_activity_radar_inactive",
+      "y": 270
+    },
+    "facing=north,powered=false": {
+      "model": "clanginghowl:block/extraterrestrial_activity_radar_inactive",
+      "y": 180
+    },
+    "facing=south,powered=false": {
+      "model": "clanginghowl:block/extraterrestrial_activity_radar_inactive"
+    },
+    "facing=west,powered=false": {
+      "model": "clanginghowl:block/extraterrestrial_activity_radar_inactive",
+      "y": 90
+    }
+  }
+}

@@ -53,6 +53,7 @@ public class CHItemTagsProvider extends IntrinsicHolderTagsProvider<Item> {
                 .add(CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE_SLAB.get().asItem())
                 .add(CHBlocks.EXTRATERRESTRIAL_STONE_BRICK_SLAB.get().asItem())
                 .add(CHBlocks.CARVED_STEEL_PLATE_SLAB.get().asItem())
+                .add(CHBlocks.STEEL_BRIDGE_SLAB.get().asItem())
                 .add(CHBlocks.CALCITE_TILE_SLAB.get().asItem())
                 .add(CHBlocks.TECHNOFLESH_SLAB.get().asItem())
                 .replace(false);

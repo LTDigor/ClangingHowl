@@ -10,6 +10,9 @@ public class CHCapImp implements ICHCap {
     private int shakeTime = 0;
     private boolean moving = false;
     private float resist = 0;
+    private int enlightenedTick = 0;
+    private int ticksInAir = 0;
+    private int flash = 0;
 
     @Override
     public int getMiningProgress() {
@@ -59,5 +62,35 @@ public class CHCapImp implements ICHCap {
     @Override
     public void setTechnoResist(float resist) {
         this.resist = resist;
+    }
+
+    @Override
+    public int getEnlightenedTick() {
+        return this.enlightenedTick;
+    }
+
+    @Override
+    public void setEnlightenedTick(int tick) {
+        this.enlightenedTick = tick;
+    }
+
+    @Override
+    public int getTicksInAir() {
+        return this.ticksInAir;
+    }
+
+    @Override
+    public void setTicksInAir(int ticksInAir) {
+        this.ticksInAir = ticksInAir;
+    }
+
+    @Override
+    public int getFlashTick() {
+        return this.flash;
+    }
+
+    @Override
+    public void setFlashTick(int tick) {
+        this.flash = tick;
     }
 }

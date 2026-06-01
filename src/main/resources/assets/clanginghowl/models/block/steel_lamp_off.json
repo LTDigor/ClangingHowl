@@ -1,0 +1,6 @@
+{
+	"parent": "clanginghowl:block/template_steel_lamp",
+	"textures": {
+		"lamp": "clanginghowl:block/steel_lamp_off"
+	}
+}

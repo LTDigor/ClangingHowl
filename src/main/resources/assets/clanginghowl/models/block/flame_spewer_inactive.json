@@ -1,0 +1,9 @@
+{
+    "parent": "clanginghowl:block/template_bottom_top_side",
+    "textures": {
+        "particle": "clanginghowl:block/flame_spewer",
+        "bottom": "clanginghowl:block/flame_spewer_bottom",
+        "top": "clanginghowl:block/flame_spewer_top",
+        "side": "clanginghowl:block/flame_spewer"
+    }
+}

@@ -6,6 +6,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -25,14 +26,16 @@ public class CrystalFormerBlock extends BaseEntityBlock {
     public CrystalFormerBlock() {
         super(Properties.of()
                 .strength(4.0F, 9.0F)
-                .sound(SoundType.COPPER)
-                .lightLevel(l -> l.getValue(ENABLED) ? 2 : 0));
+                .sound(SoundType.COPPER));
         this.registerDefaultState(this.stateDefinition.any().setValue(ENABLED, true));
     }
 
-    @Override
-    public RenderShape getRenderShape(BlockState p_49232_) {
+    public RenderShape getRenderShape(BlockState p_60550_) {
         return RenderShape.MODEL;
+    }
+
+    public float getShadeBrightness(BlockState p_48731_, BlockGetter p_48732_, BlockPos p_48733_) {
+        return 1.0F;
     }
 
     @Nullable
@@ -54,13 +57,15 @@ public class CrystalFormerBlock extends BaseEntityBlock {
     }
 
     @Override
-    public void randomTick(BlockState p_222954_, ServerLevel p_222955_, BlockPos p_222956_, RandomSource p_222957_) {
-        super.randomTick(p_222954_, p_222955_, p_222956_, p_222957_);
-        if (p_222954_.getValue(ENABLED)) {
-            for (Direction direction : Direction.values()) {
-                BlockPos blockPos = p_222956_.relative(direction);
-                if (p_222955_.getFluidState(blockPos).isSourceOfType(Fluids.WATER)) {
-                    p_222955_.setBlock(blockPos, Blocks.ICE.defaultBlockState(), 2);
+    public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
+        super.randomTick(pState, pLevel, pPos, pRandom);
+        if (pLevel.isLoaded(pPos)) {
+            if (pState.getValue(ENABLED)) {
+                for (Direction direction : Direction.values()) {
+                    BlockPos blockPos = pPos.relative(direction);
+                    if (pLevel.getFluidState(blockPos).isSourceOfType(Fluids.WATER)) {
+                        pLevel.setBlock(blockPos, Blocks.ICE.defaultBlockState(), 2);
+                    }
                 }
             }
         }

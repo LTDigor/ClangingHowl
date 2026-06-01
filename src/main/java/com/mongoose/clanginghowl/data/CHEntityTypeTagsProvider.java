@@ -27,6 +27,11 @@ public class CHEntityTypeTagsProvider extends IntrinsicHolderTagsProvider<Entity
         this.tag(CHTags.EntityTypes.TECHNO_FLESH).add(
                 CHEntityType.HEART_OF_DECAY.get(),
                 CHEntityType.EX_REAPER.get(),
-                CHEntityType.FLESH_MAIDEN.get());
+                CHEntityType.FLESH_MAIDEN.get(),
+                CHEntityType.HEMATOMA.get(),
+                CHEntityType.BLOOD_SPREADER.get(),
+                CHEntityType.BLOODY_COPY.get(),
+                CHEntityType.PROWLER.get(),
+                CHEntityType.CARCASS.get());
     }
 }

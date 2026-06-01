@@ -10,10 +10,31 @@ import java.util.List;
 
 public class BatteryItem extends EnergyItem {
     public int maxBattery;
+    public boolean canCharge;
+    public boolean persistant;
 
-    public BatteryItem(Properties properties, int maxBattery) {
+    public BatteryItem(Properties properties, int maxBattery, boolean canCharge, boolean persistant) {
         super(properties);
         this.maxBattery = maxBattery;
+        this.canCharge = canCharge;
+        this.persistant = persistant;
+    }
+
+    public BatteryItem(Properties properties, int maxBattery) {
+        this(properties, maxBattery, false, false);
+    }
+
+    @Override
+    public boolean canCharge() {
+        return this.canCharge;
+    }
+
+    public boolean isPersistant() {
+        return this.persistant;
+    }
+
+    public static boolean isPersistant(ItemStack itemStack) {
+        return itemStack.getItem() instanceof BatteryItem batteryItem && batteryItem.isPersistant();
     }
 
     @Override

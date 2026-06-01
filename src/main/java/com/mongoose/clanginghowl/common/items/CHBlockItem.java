@@ -1,7 +1,6 @@
 package com.mongoose.clanginghowl.common.items;
 
-import com.mongoose.clanginghowl.common.blocks.ChargingStationBlock;
-import com.mongoose.clanginghowl.common.blocks.CrystalFormerBlock;
+import com.mongoose.clanginghowl.common.blocks.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -29,6 +28,22 @@ public class CHBlockItem extends BlockItem {
             }
             if (base.getBlock() instanceof ChargingStationBlock){
                 tooltip.add(Component.translatable("info.clanginghowl.block.charger"));
+            }
+            if (base.getBlock() instanceof ExBarrierBlock){
+                tooltip.add(Component.translatable("info.clanginghowl.block.barrier"));
+            }
+            if (base.getBlock() instanceof BrokenCrystalFormerBlock){
+                tooltip.add(Component.translatable("info.clanginghowl.block.broken_former"));
+            }
+            if (base.getBlock() instanceof FlameSpewerBlock){
+                tooltip.add(Component.translatable("info.clanginghowl.block.flame_spewer.1"));
+                tooltip.add(Component.translatable("info.clanginghowl.block.flame_spewer.2"));
+            }
+            if (base.getBlock() instanceof MotionSensorBlock){
+                tooltip.add(Component.translatable("info.clanginghowl.block.sensor"));
+            }
+            if (base.getBlock() instanceof ExActivityRadarBlock){
+                tooltip.add(Component.translatable("info.clanginghowl.block.radar"));
             }
         }
     }

@@ -5,7 +5,6 @@ import com.mongoose.clanginghowl.common.items.CHItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.SpawnEggItem;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -26,10 +25,18 @@ public class CHItemModelProvider extends ItemModelProvider {
         this.itemGeneratedModel(CHItems.EXTRATERRESTRIAL_STEEL_NUGGET.get());
         this.itemGeneratedModel(CHItems.EXTRATERRESTRIAL_STEEL_PLATE.get());
         this.itemGeneratedModel(CHItems.EXTRATERRESTRIAL_ENERGY_CRYSTAL.get());
+        this.itemGeneratedModel(CHItems.SMALL_ENERGY_BATTERY.get());
         this.itemGeneratedModel(CHItems.ENERGY_BATTERY.get());
         this.itemGeneratedModel(CHItems.ENERGY_INTENSIVE_BATTERY.get());
         this.itemGeneratedModel(CHItems.BATTERY_PANEL.get());
         this.itemGeneratedModel(CHItems.CHUNK_OF_TECHNOFLESH.get());
+        this.itemGeneratedModel(CHItems.ENERGY_FIBER.get());
+        this.itemGeneratedModel(CHItems.NETHERRACK_SHAVINGS.get());
+        this.itemGeneratedModel(CHItems.FIREPROOF_STEEL_COATING.get());
+        this.itemGeneratedModel(CHItems.ADVANCED_ELECTRONICS.get());
+        this.itemGeneratedModel(CHItems.TECHNO_OPTICS.get());
+        this.itemGeneratedModel(CHItems.TECHNO_HEART.get());
+        this.itemGeneratedModel(CHItems.HEMATOMA_LUMP.get());
 
         this.itemHandheldModel(CHItems.EXTRATERRESTRIAL_SWORD.get());
         this.itemHandheldModel(CHItems.EXTRATERRESTRIAL_SHOVEL.get());
@@ -37,7 +44,18 @@ public class CHItemModelProvider extends ItemModelProvider {
         this.itemHandheldModel(CHItems.EXTRATERRESTRIAL_AXE.get());
         this.itemHandheldModel(CHItems.EXTRATERRESTRIAL_HOE.get());
 
-        for (Item item : ForgeRegistries.ITEMS) {
+        this.itemGeneratedModel(CHItems.ATTRACTION_DEVICE.get());
+
+        this.itemGeneratedModel(CHItems.ENERGY_BARRIER_GENERATOR.get());
+        this.itemGeneratedModel(CHItems.TENDON_STRENGTHENER.get());
+        this.itemGeneratedModel(CHItems.ENERGY_GLOVE.get());
+        this.itemGeneratedModel(CHItems.JET_BOOTS.get());
+        this.itemGeneratedModel(CHItems.BLOODY_BATTERY.get());
+        this.itemGeneratedModel(CHItems.REANIMATOR.get());
+
+        this.itemGeneratedModel(CHItems.REANIMATION.get());
+
+        /*for (Item item : ForgeRegistries.ITEMS) {
             if (ForgeRegistries.ITEMS.getKey(item) != null) {
                 ResourceLocation resourceLocation = ForgeRegistries.ITEMS.getKey(item);
                 if (resourceLocation != null) {
@@ -47,7 +65,7 @@ public class CHItemModelProvider extends ItemModelProvider {
                     }
                 }
             }
-        }
+        }*/
     }
 
     public void itemHandheldModel(Item item) {

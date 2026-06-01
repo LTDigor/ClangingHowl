@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.mongoose.clanginghowl.client.inventory.menu.PortableChargerMenu;
 import com.mongoose.clanginghowl.common.items.capabilities.PortableChargerCapability;
 import com.mongoose.clanginghowl.common.items.handler.PortableChargerHandler;
+import com.mongoose.clanginghowl.utils.CHCuriosFinder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -48,11 +49,11 @@ public class PortableChargerItem extends Item {
             PortableChargerHandler handler = PortableChargerHandler.get(stack);
             ItemStack battery = ItemStack.EMPTY;
             for (ItemStack itemStack : handler.getContents()) {
-                if (itemStack.getItem() instanceof BatteryItem) {
+                if (itemStack.getItem() instanceof BatteryItem batteryItem) {
                     if (!IEnergyItem.isEmpty(itemStack)) {
                         battery = itemStack;
                         break;
-                    } else {
+                    } else if (!batteryItem.isPersistant()) {
                         itemStack.shrink(1);
                     }
                 }
@@ -64,9 +65,16 @@ public class PortableChargerItem extends Item {
                     for (List<ItemStack> list : compartments) {
                         for (ItemStack itemStack : list) {
                             if (!itemStack.isEmpty()) {
-                                if (itemStack.getItem() instanceof IEnergyItem && !(itemStack.getItem() instanceof BatteryItem) && !IEnergyItem.isFull(itemStack)) {
+                                if (itemStack.getItem() instanceof IEnergyItem item && item.canCharge() && !IEnergyItem.isFull(itemStack)) {
                                     IEnergyItem.chargeEnergy(itemStack, battery);
                                 }
+                            }
+                        }
+                    }
+                    for (ItemStack itemStack : CHCuriosFinder.getCurioList(player, item -> item instanceof IEnergyItem)) {
+                        if (!itemStack.isEmpty()) {
+                            if (itemStack.getItem() instanceof IEnergyItem item && item.canCharge() && !IEnergyItem.isFull(itemStack)) {
+                                IEnergyItem.chargeEnergy(itemStack, battery);
                             }
                         }
                     }

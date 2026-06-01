@@ -1,0 +1,6 @@
+{
+	"parent": "clanginghowl:block/template_radar",
+	"textures": {
+		"radar": "clanginghowl:block/extraterrestrial_activity_radar"
+	}
+}

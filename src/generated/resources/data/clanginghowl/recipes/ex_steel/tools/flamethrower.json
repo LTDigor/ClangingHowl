@@ -11,12 +11,15 @@
     "F": {
       "item": "clanginghowl:blaze_fuel_cylinder"
     },
+    "I": {
+      "item": "clanginghowl:fireproof_steel_coating"
+    },
     "P": {
       "item": "clanginghowl:extraterrestrial_steel_ingot"
     }
   },
   "pattern": [
-    "P  ",
+    "I  ",
     "BPC",
     " FC"
   ],

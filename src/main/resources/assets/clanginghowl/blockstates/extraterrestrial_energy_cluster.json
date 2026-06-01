@@ -1,16 +1,108 @@
 {
   "variants": {
-    "age=0": {
+    "age=0,facing=down": {
+      "model": "clanginghowl:block/small_extraterrestrial_energy_cluster",
+      "x": 180
+    },
+    "age=1,facing=down": {
+      "model": "clanginghowl:block/medium_extraterrestrial_energy_cluster",
+      "x": 180
+    },
+    "age=2,facing=down": {
+      "model": "clanginghowl:block/large_extraterrestrial_energy_cluster",
+      "x": 180
+    },
+    "age=3,facing=down": {
+      "model": "clanginghowl:block/huge_extraterrestrial_energy_cluster_bottom",
+      "x": 180
+    },
+    "age=0,facing=east": {
+      "model": "clanginghowl:block/small_extraterrestrial_energy_cluster",
+      "x": 90,
+      "y": 90
+    },
+    "age=1,facing=east": {
+      "model": "clanginghowl:block/medium_extraterrestrial_energy_cluster",
+      "x": 90,
+      "y": 90
+    },
+    "age=2,facing=east": {
+      "model": "clanginghowl:block/large_extraterrestrial_energy_cluster",
+      "x": 90,
+      "y": 90
+    },
+    "age=3,facing=east": {
+      "model": "clanginghowl:block/huge_extraterrestrial_energy_cluster_bottom",
+      "x": 90,
+      "y": 90
+    },
+    "age=0,facing=north": {
+      "model": "clanginghowl:block/small_extraterrestrial_energy_cluster",
+      "x": 90
+    },
+    "age=1,facing=north": {
+      "model": "clanginghowl:block/medium_extraterrestrial_energy_cluster",
+      "x": 90
+    },
+    "age=2,facing=north": {
+      "model": "clanginghowl:block/large_extraterrestrial_energy_cluster",
+      "x": 90
+    },
+    "age=3,facing=north": {
+      "model": "clanginghowl:block/huge_extraterrestrial_energy_cluster_bottom",
+      "x": 90
+    },
+    "age=0,facing=south": {
+      "model": "clanginghowl:block/small_extraterrestrial_energy_cluster",
+      "x": 90,
+      "y": 180
+    },
+    "age=1,facing=south": {
+      "model": "clanginghowl:block/medium_extraterrestrial_energy_cluster",
+      "x": 90,
+      "y": 180
+    },
+    "age=2,facing=south": {
+      "model": "clanginghowl:block/large_extraterrestrial_energy_cluster",
+      "x": 90,
+      "y": 180
+    },
+    "age=3,facing=south": {
+      "model": "clanginghowl:block/huge_extraterrestrial_energy_cluster_bottom",
+      "x": 90,
+      "y": 180
+    },
+    "age=0,facing=up": {
       "model": "clanginghowl:block/small_extraterrestrial_energy_cluster"
     },
-    "age=1": {
+    "age=1,facing=up": {
       "model": "clanginghowl:block/medium_extraterrestrial_energy_cluster"
     },
-    "age=2": {
+    "age=2,facing=up": {
       "model": "clanginghowl:block/large_extraterrestrial_energy_cluster"
     },
-    "age=3": {
+    "age=3,facing=up": {
       "model": "clanginghowl:block/huge_extraterrestrial_energy_cluster_bottom"
+    },
+    "age=0,facing=west": {
+      "model": "clanginghowl:block/small_extraterrestrial_energy_cluster",
+      "x": 90,
+      "y": 270
+    },
+    "age=1,facing=west": {
+      "model": "clanginghowl:block/medium_extraterrestrial_energy_cluster",
+      "x": 90,
+      "y": 270
+    },
+    "age=2,facing=west": {
+      "model": "clanginghowl:block/large_extraterrestrial_energy_cluster",
+      "x": 90,
+      "y": 270
+    },
+    "age=3,facing=west": {
+      "model": "clanginghowl:block/huge_extraterrestrial_energy_cluster_bottom",
+      "x": 90,
+      "y": 270
     }
   }
 }

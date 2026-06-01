@@ -10,11 +10,15 @@ import net.minecraft.world.level.Level;
 
 public class EffectsUtil {
 
-    public static void amplifyEffect (LivingEntity infected, MobEffect effect, int duration){
-        amplifyEffect(infected, effect, duration, 4, false, true);
+    public static boolean amplifyEffect(LivingEntity infected, MobEffect effect, int duration){
+        return amplifyEffect(infected, effect, duration, 4);
     }
 
-    public static void amplifyEffect(LivingEntity infected, MobEffect effect, int duration, int maxAmp, boolean pAmbient, boolean pVisible){
+    public static boolean amplifyEffect(LivingEntity infected, MobEffect effect, int duration, int maxAmp){
+        return amplifyEffect(infected, effect, duration, maxAmp, false, true);
+    }
+
+    public static boolean amplifyEffect(LivingEntity infected, MobEffect effect, int duration, int maxAmp, boolean pAmbient, boolean pVisible){
         MobEffectInstance MobEffectInstance1 = infected.getEffect(effect);
         int i = 1;
         if (MobEffectInstance1 != null) {
@@ -26,7 +30,7 @@ public class EffectsUtil {
 
         i = Mth.clamp(i, 0, maxAmp);
         MobEffectInstance MobEffectInstance = new MobEffectInstance(effect, duration, i, pAmbient, pVisible);
-        infected.addEffect(MobEffectInstance);
+        return infected.addEffect(MobEffectInstance);
     }
 
     public static void resetDuration(LivingEntity infected, MobEffect effect, int duration){

@@ -85,6 +85,10 @@ repositories {
         }
     }
     maven {
+        name = "Curios"
+        url = "https://maven.theillusivec4.top"
+    }
+    maven {
         name = "Jared's maven"
         url = "https://maven.blamejared.com/"
     }
@@ -117,6 +121,10 @@ dependencies {
 
     //GeckoLib
     implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
+
+    //Curios
+    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curio_version}+${minecraft_version}:api")
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curio_version}+${minecraft_version}")
 
     //Jade
     implementation fg.deobf("curse.maven:jade-324717:5493390")

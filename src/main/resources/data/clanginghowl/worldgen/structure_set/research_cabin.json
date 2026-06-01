@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "clanginghowl:research_cabin",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 909382985,
+    "spacing": 40,
+    "separation": 5,
+    "type": "minecraft:random_spread"
+  }
+}

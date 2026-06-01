@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "bottom": "clanginghowl:block/flame_spewer_bottom",
+    "front": "clanginghowl:block/barrier_of_extraterrestrial_activity_front_inactive",
+    "side": "clanginghowl:block/barrier_of_extraterrestrial_activity_side",
+    "top": "clanginghowl:block/barrier_of_extraterrestrial_activity_top_inactive"
+  }
+}

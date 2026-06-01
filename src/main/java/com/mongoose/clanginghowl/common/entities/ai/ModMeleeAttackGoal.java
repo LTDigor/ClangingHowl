@@ -134,9 +134,7 @@ public class ModMeleeAttackGoal extends Goal {
             this.ticksUntilNextPathRecalculation = this.adjustedTickDelay(this.ticksUntilNextPathRecalculation);
          }
 
-         if (this.ticksUntilNextAttack > 0) {
-            --this.ticksUntilNextAttack;
-         }
+         this.decreaseTicksUntilNextAttack();
          this.checkAndPerformAttack(livingentity, d0);
       }
    }
@@ -149,6 +147,12 @@ public class ModMeleeAttackGoal extends Goal {
          this.mob.doHurtTarget(target);
       }
 
+   }
+
+   public void decreaseTicksUntilNextAttack(){
+      if (this.ticksUntilNextAttack > 0) {
+         --this.ticksUntilNextAttack;
+      }
    }
 
    protected void resetAttackCooldown() {

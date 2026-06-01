@@ -42,6 +42,21 @@
           "name": "clanginghowl:piece_of_extraterrestrial_steel"
         }
       ]
+    },
+    {
+      "bonus_rolls": 0.0,
+      "rolls": 1.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "weight": 15,
+          "name": "clanginghowl:techno_optics"
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 85
+        }
+      ]
     }
   ]
 }

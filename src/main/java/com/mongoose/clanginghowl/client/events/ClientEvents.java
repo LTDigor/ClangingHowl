@@ -1,30 +1,58 @@
 package com.mongoose.clanginghowl.client.events;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mongoose.clanginghowl.ClangingHowl;
 import com.mongoose.clanginghowl.client.audio.ItemIdleSound;
 import com.mongoose.clanginghowl.client.audio.ItemLoopSound;
+import com.mongoose.clanginghowl.client.render.WearRenderer;
+import com.mongoose.clanginghowl.common.capabilities.CHCapHelper;
+import com.mongoose.clanginghowl.common.effects.CHEffects;
+import com.mongoose.clanginghowl.common.entities.utils.CameraShake;
 import com.mongoose.clanginghowl.common.items.CHItems;
+import com.mongoose.clanginghowl.common.items.curios.EnergyGlove;
+import com.mongoose.clanginghowl.common.items.curios.XRayGoggles;
 import com.mongoose.clanginghowl.common.items.energy.ChainsawItem;
 import com.mongoose.clanginghowl.common.items.energy.ChainswordItem;
 import com.mongoose.clanginghowl.common.items.energy.IEnergyItem;
 import com.mongoose.clanginghowl.common.items.fuel.IFuel;
+import com.mongoose.clanginghowl.common.network.CHNetwork;
+import com.mongoose.clanginghowl.common.network.client.CActivateCurioKeyPacket;
+import com.mongoose.clanginghowl.common.network.client.CJetBootsJumpPacket;
+import com.mongoose.clanginghowl.config.CHConfig;
+import com.mongoose.clanginghowl.init.CHKeybindings;
 import com.mongoose.clanginghowl.init.CHSounds;
+import com.mongoose.clanginghowl.utils.CHCuriosFinder;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.client.sounds.SoundManager;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.MovementInputUpdateEvent;
+import net.minecraftforge.client.event.*;
+import net.minecraftforge.client.gui.overlay.ForgeGui;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.network.PacketDistributor;
+import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.SlotResult;
+
+import java.util.Optional;
+import java.util.Random;
 
 @Mod.EventBusSubscriber(modid = ClangingHowl.MOD_ID, value = Dist.CLIENT)
 public class ClientEvents {
@@ -36,6 +64,25 @@ public class ClientEvents {
                 playItemIdleLoop(CHSounds.CHAINSAW_IDLE.get(), event.player, CHItems.ADVANCED_CHAINSAW.get(), 0.4F, 1.0F);
             } else if (event.player.isHolding(itemStack -> itemStack.getItem() instanceof ChainswordItem && !IEnergyItem.isEmpty(itemStack))) {
                 playItemIdleLoop(CHSounds.CHAINSAW_IDLE.get(), event.player, CHItems.ADVANCED_CHAINSWORD.get(), 0.3F, 1.0F);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void renderGlove(RenderArmEvent event){
+        if (event.isCanceled()){
+            return;
+        }
+
+        Optional<SlotResult> slotResult = CuriosApi.getCuriosInventory(event.getPlayer()).map(inv -> inv.findFirstCurio(itemStack -> itemStack.getItem() instanceof EnergyGlove))
+                .orElse(Optional.empty());
+        if (slotResult.isPresent()) {
+            ItemStack itemStack = slotResult.get().stack();
+            if (slotResult.get().slotContext().visible()) {
+                WearRenderer renderer = WearRenderer.getRenderer(itemStack);
+                if (renderer != null) {
+                    renderer.renderFirstPersonArm(event.getPoseStack(), slotResult.get().stack(), event.getMultiBufferSource(), event.getPackedLight(), event.getPlayer(), itemStack.hasFoil());
+                }
             }
         }
     }
@@ -92,6 +139,210 @@ public class ClientEvents {
                     input.leftImpulse *= 5.0F;
                     input.forwardImpulse *= 5.0F;
                 }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void RenderHealthBarPre(RenderGuiOverlayEvent.Pre event) {
+        if (event.getOverlay().id() != VanillaGuiOverlay.PLAYER_HEALTH.id()) {
+            return;
+        }
+        Minecraft minecraft = Minecraft.getInstance();
+        Player player = minecraft.player;
+        if (player == null){
+            return;
+        }
+
+        if (minecraft.gui instanceof ForgeGui gui) {
+            if (!minecraft.options.hideGui && gui.shouldDrawSurvivalElements()
+                    && (player.hasEffect(CHEffects.NEUROTOXIN.get()))) {
+                setHearts(event);
+            }
+        }
+    }
+
+    private static final ResourceLocation CUSTOM_HEARTS = ClangingHowl.location("textures/gui/custom_hearts.png");
+
+    private static int lastHealth;
+    private static int displayHealth;
+    private static long lastHealthTime;
+    private static long healthBlinkTime;
+
+    private static void setHearts(RenderGuiOverlayEvent.Pre event) {
+        Player player = Minecraft.getInstance().player;
+        Minecraft mc = Minecraft.getInstance();
+        if (player == null){
+            return;
+        }
+        ForgeGui gui = (ForgeGui)mc.gui;
+        GuiGraphics stack = event.getGuiGraphics();
+        gui.setupOverlayRenderState(true, false);
+        int width = event.getWindow().getGuiScaledWidth();
+        int height = event.getWindow().getGuiScaledHeight();
+        event.setCanceled(true);
+        RenderSystem.setShaderTexture(0, CUSTOM_HEARTS);
+        RenderSystem.enableBlend();
+        int health = Mth.ceil(player.getHealth());
+        int tickCount = gui.getGuiTicks();
+        boolean highlight = healthBlinkTime > (long)tickCount && (healthBlinkTime - (long)tickCount) / 3L % 2L == 1L;
+        if (health < lastHealth && player.invulnerableTime > 0) {
+            lastHealthTime = Util.getMillis();
+            healthBlinkTime = (long)(tickCount + 20);
+        } else if (health > lastHealth && player.invulnerableTime > 0) {
+            lastHealthTime = Util.getMillis();
+            healthBlinkTime = (long)(tickCount + 10);
+        }
+
+        if (Util.getMillis() - lastHealthTime > 1000L) {
+            lastHealth = health;
+            displayHealth = health;
+            lastHealthTime = Util.getMillis();
+        }
+
+        lastHealth = health;
+        int healthLast = displayHealth;
+        float healthMax = (float) player.getAttributeValue(Attributes.MAX_HEALTH);
+        int absorption = Mth.ceil(player.getAbsorptionAmount());
+        int healthRows = Mth.ceil((healthMax + (float)absorption) / 2.0F / 10.0F);
+        int rowHeight = Math.max(10 - (healthRows - 2), 3);
+        Random random = new Random();
+        random.setSeed((long)tickCount * 312871L);
+        int left = width / 2 - 91;
+        int top = height - gui.leftHeight;
+        gui.leftHeight += healthRows * rowHeight;
+        if (rowHeight != 10) {
+            gui.leftHeight += 10 - rowHeight;
+        }
+
+        int regen = -1;
+        if (player.hasEffect(MobEffects.REGENERATION)) {
+            regen = tickCount % Mth.ceil(healthMax + 5.0F);
+        }
+
+        int TOP = player.level().getLevelData().isHardcore() ? 9 : 0;
+        if (highlight){
+            TOP = player.level().getLevelData().isHardcore() ? 27 : 18;
+        }
+        int BACKGROUND_X = highlight ? 25 : 16;
+        int BACKGROUND_Y = player.level().getLevelData().isHardcore() ? 9 : 0;
+        int heartX = 0;
+        if (player.hasEffect(CHEffects.NEUROTOXIN.get())){
+            heartX = 34;
+        }
+        float absorptionRemaining = (float)absorption;
+
+        for(int i = Mth.ceil((healthMax + (float)absorption) / 2.0F) - 1; i >= 0; --i) {
+            int row = Mth.ceil((float)(i + 1) / 10.0F) - 1;
+            int x = left + i % 10 * 8;
+            int y = top - row * rowHeight;
+            if (health <= 4) {
+                y += random.nextInt(2);
+            }
+
+            if (i == regen) {
+                y -= 2;
+            }
+
+            stack.blit(CUSTOM_HEARTS, x, y, BACKGROUND_X, BACKGROUND_Y, 9, 9);
+            if (highlight) {
+                if (i * 2 + 1 < healthLast) {
+                    stack.blit(CUSTOM_HEARTS, x, y, heartX, TOP, 9, 9);
+                } else if (i * 2 + 1 == healthLast) {
+                    stack.blit(CUSTOM_HEARTS, x, y, heartX + 9, TOP, 9, 9);
+                }
+            }
+
+            if (absorptionRemaining > 0.0F) {
+                if (absorptionRemaining == (float)absorption && (float)absorption % 2.0F == 1.0F) {
+                    stack.blit(CUSTOM_HEARTS, x, y, heartX + 9, TOP, 9, 9);
+                    --absorptionRemaining;
+                } else {
+                    stack.blit(CUSTOM_HEARTS, x, y, heartX, TOP, 9, 9);
+                    absorptionRemaining -= 2.0F;
+                }
+            } else if (i * 2 + 1 < health) {
+                stack.blit(CUSTOM_HEARTS, x, y, heartX, TOP, 9, 9);
+            } else if (i * 2 + 1 == health) {
+                stack.blit(CUSTOM_HEARTS, x, y, heartX + 9, TOP, 9, 9);
+            }
+        }
+
+        RenderSystem.disableBlend();
+        RenderSystem.setShaderTexture(0, CUSTOM_HEARTS);
+    }
+
+    private static boolean prevJumpBindState = false;
+
+    @SubscribeEvent
+    public static void TickEvents(TickEvent.ClientTickEvent event) {
+        if (event.phase != TickEvent.Phase.START){
+            Minecraft minecraft = Minecraft.getInstance();
+            if (minecraft.player != null){
+                Player player = minecraft.player;
+                if (minecraft.options.keyJump.isDown() && !prevJumpBindState && !player.isInWater() && CHCapHelper.getTicksInAir(player) > 2 && !player.isCreative() && !player.isSpectator() && !player.isPassenger()) {
+                    CHNetwork.sendToServer(new CJetBootsJumpPacket());
+                    CHCapHelper.doubleJump(player);
+                }
+                prevJumpBindState = minecraft.options.keyJump.isDown();
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onFogRender(ViewportEvent.RenderFog event) {
+        Player player = Minecraft.getInstance().player;
+
+        if (player == null) {
+            return;
+        }
+
+        ItemStack stack = CHCuriosFinder.findCurio(player, CHItems.X_RAY_GOGGLES.get());
+
+        if (!(stack.getItem() instanceof XRayGoggles) || !XRayGoggles.isActivated(stack) || !player.hasEffect(MobEffects.BLINDNESS) && !player.hasEffect(MobEffects.DARKNESS)) {
+            return;
+        }
+
+        float f = 1.0F * (player.hasEffect(MobEffects.BLINDNESS) ? 9 : 1);
+
+        event.scaleFarPlaneDistance(event.getFarPlaneDistance() * f);
+
+        event.setCanceled(true);
+    }
+
+    /**
+     * Ripped from @BobMowzie's codes:<a href="https://github.com/BobMowzie/MowziesMobs/blob/master/src/main/java/com/bobmowzie/mowziesmobs/client/ClientEventHandler.java#L211">...</a>
+     */
+    @SubscribeEvent
+    public static void onSetupCamera(ViewportEvent.ComputeCameraAngles event) {
+        Player player = Minecraft.getInstance().player;
+        float delta = Minecraft.getInstance().getFrameTime();
+        if (player != null) {
+            float ticksExistedDelta = player.tickCount + delta;
+            if (CHConfig.CameraShake.get() && !Minecraft.getInstance().isPaused()) {
+                float shakeAmplitude = 0;
+                for (CameraShake cameraShake : player.level().getEntitiesOfClass(CameraShake.class, player.getBoundingBox().inflate(20))) {
+                    if (cameraShake.distanceTo(player) < cameraShake.getRadius()) {
+                        shakeAmplitude += cameraShake.getShakeAmount(player, delta);
+                    }
+                }
+                if (shakeAmplitude > 1.0F) {
+                    shakeAmplitude = 1.0F;
+                }
+                event.setPitch((float) (event.getPitch() + shakeAmplitude * Math.cos(ticksExistedDelta * 3.0D + 2.0D) * 25.0D));
+                event.setYaw((float) (event.getYaw() + shakeAmplitude * Math.cos(ticksExistedDelta * 5.0D + 1.0D) * 25.0D));
+                event.setRoll((float) (event.getRoll() + shakeAmplitude * Math.cos(ticksExistedDelta * 4.0D) * 25.0D));
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void KeyInputs(InputEvent.Key event) {
+        Minecraft MINECRAFT = Minecraft.getInstance();
+
+        if (MINECRAFT.player != null) {
+            if (CHKeybindings.keyBindings[0].isDown() && MINECRAFT.player.isCrouching() && MINECRAFT.isWindowActive()) {
+                CHNetwork.INSTANCE.send(PacketDistributor.SERVER.noArg(), new CActivateCurioKeyPacket());
             }
         }
     }

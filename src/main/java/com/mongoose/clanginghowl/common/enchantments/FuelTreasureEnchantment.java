@@ -27,7 +27,9 @@ public class FuelTreasureEnchantment extends Enchantment {
         if (this == CHEnchantments.CHAIN_BURN.get()) {
             return enchantment != CHEnchantments.FUEL_BURST.get();
         } else if (this == CHEnchantments.FUEL_BURST.get()) {
-            return enchantment != CHEnchantments.CHAIN_BURN.get();
+            return enchantment != CHEnchantments.CHAIN_BURN.get() && enchantment != CHEnchantments.SOUL_BURNER.get();
+        } else if (this == CHEnchantments.SOUL_BURNER.get()) {
+            return enchantment != CHEnchantments.FUEL_BURST.get();
         }
         return super.checkCompatibility(enchantment);
     }

@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "clanginghowl:large_extraterrestrial_nest",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 620122694,
+    "spacing": 65,
+    "separation": 5,
+    "type": "minecraft:random_spread"
+  }
+}

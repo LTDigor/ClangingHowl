@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/template_glass_pane_post",
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "edge": "clanginghowl:block/extraterrestrial_steel_grate",
+    "pane": "clanginghowl:block/extraterrestrial_steel_grate"
+  }
+}

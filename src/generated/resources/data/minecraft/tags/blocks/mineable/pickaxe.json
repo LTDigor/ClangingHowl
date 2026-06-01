@@ -2,11 +2,20 @@
   "values": [
     "#clanginghowl:ex_stone_blocks",
     "#clanginghowl:ex_steel_blocks",
+    "#clanginghowl:lamps",
     "#clanginghowl:calcite",
     "#clanginghowl:energy_cluster",
+    "#clanginghowl:fireproof_steel_blocks",
     "clanginghowl:meteorite_steel_ore",
     "clanginghowl:extraterrestrial_steel_ore",
+    "clanginghowl:extraterrestrial_energy_crystal_block",
+    "clanginghowl:blaze_fuel_cylinder",
     "clanginghowl:crystal_former",
-    "clanginghowl:stationary_charging_station"
+    "clanginghowl:stationary_charging_station",
+    "clanginghowl:barrier_of_extraterrestrial_activity",
+    "clanginghowl:broken_crystal_former",
+    "clanginghowl:flame_spewer",
+    "clanginghowl:motion_sensor",
+    "clanginghowl:extraterrestrial_activity_radar"
   ]
 }

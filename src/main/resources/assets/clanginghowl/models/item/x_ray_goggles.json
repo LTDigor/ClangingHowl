@@ -1,0 +1,20 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "clanginghowl:item/x_ray_goggles_off"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "active": 0.00000
+      },
+      "model": "clanginghowl:item/x_ray_goggles_inactive"
+    },
+    {
+      "predicate": {
+        "active": 1.00000
+      },
+      "model": "clanginghowl:item/x_ray_goggles_active"
+    }
+  ]
+}

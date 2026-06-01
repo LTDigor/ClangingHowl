@@ -9,13 +9,13 @@
       "item": "clanginghowl:blaze_fuel"
     },
     "P": {
-      "item": "clanginghowl:extraterrestrial_steel_plate"
+      "item": "clanginghowl:fireproof_steel_coating"
     }
   },
   "pattern": [
     " C ",
     "PFP",
-    "PPP"
+    " P "
   ],
   "result": {
     "item": "clanginghowl:blaze_fuel_cylinder"

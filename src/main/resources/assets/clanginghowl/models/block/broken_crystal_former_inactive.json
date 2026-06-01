@@ -1,0 +1,9 @@
+{
+    "parent": "clanginghowl:block/template_bottom_top_side",
+    "textures": {
+        "particle": "clanginghowl:block/broken_crystal_former_inactive",
+        "bottom": "clanginghowl:block/broken_crystal_former_bottom",
+        "top": "clanginghowl:block/broken_crystal_former_inactive_top",
+        "side": "clanginghowl:block/broken_crystal_former_inactive"
+    }
+}
