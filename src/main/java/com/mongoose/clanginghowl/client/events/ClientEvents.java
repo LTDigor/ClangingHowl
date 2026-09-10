@@ -47,7 +47,6 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.network.PacketDistributor;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
 
@@ -342,7 +341,7 @@ public class ClientEvents {
 
         if (MINECRAFT.player != null) {
             if (CHKeybindings.keyBindings[0].isDown() && MINECRAFT.player.isCrouching() && MINECRAFT.isWindowActive()) {
-                CHNetwork.INSTANCE.send(PacketDistributor.SERVER.noArg(), new CActivateCurioKeyPacket());
+                CHNetwork.sendToServer(new CActivateCurioKeyPacket());
             }
         }
     }

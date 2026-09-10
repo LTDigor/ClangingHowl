@@ -15,7 +15,6 @@ import com.mongoose.clanginghowl.common.entities.CHEntityType;
 import com.mongoose.clanginghowl.common.entities.hostiles.*;
 import com.mongoose.clanginghowl.common.items.CHItems;
 import com.mongoose.clanginghowl.common.items.CHPotions;
-import com.mongoose.clanginghowl.common.network.CHNetwork;
 import com.mongoose.clanginghowl.common.world.CHMobSpawnBiomeModifier;
 import com.mongoose.clanginghowl.compat.CHCompat;
 import com.mongoose.clanginghowl.config.CHConfig;
@@ -57,7 +56,7 @@ public class ClangingHowl {
     public static SidedInit SIDED_INIT = DistExecutor.unsafeRunForDist(() -> ClientSideInit::new, () -> SidedInit::new);
 
     public static ResourceLocation location(String path) {
-        return new ResourceLocation(MOD_ID, path);
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
     }
 
     public ClangingHowl() {
@@ -91,8 +90,6 @@ public class ClangingHowl {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-        CHNetwork.init();
-
         CHCompat.setup(event);
         event.enqueueWork(() -> {
             addBrewingRecipes();
