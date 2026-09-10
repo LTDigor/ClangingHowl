@@ -1,0 +1,38 @@
+import org.objectweb.asm.ClassReader
+import org.objectweb.asm.ClassWriter
+import java.util.jar.JarFile
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
+
+// Diagnostic-only compiler ABI. No executable code or game assets are exported.
+// Never use this archive for runtime tests or include it in a mod distribution.
+gradle.projectsEvaluated {
+    def project = gradle.rootProject
+    project.tasks.register('exportCompileApi') {
+        dependsOn project.tasks.named('createMinecraftArtifacts')
+        doLast {
+            def target = project.file('verification/compile-api.jar')
+            target.parentFile.mkdirs()
+            def names = new HashSet<String>()
+            new ZipOutputStream(new FileOutputStream(target)).withCloseable { out ->
+                project.sourceSets.main.compileClasspath.files.each { file ->
+                    if (file.name.endsWith('.jar')) {
+                        new JarFile(file).withCloseable { jar ->
+                            jar.entries().each { entry ->
+                                if (entry.name.endsWith('.class') && !entry.name.startsWith('META-INF/') && entry.name != 'module-info.class' && names.add(entry.name)) {
+                                    def reader = new ClassReader(jar.getInputStream(entry).bytes)
+                                    def writer = new ClassWriter(0)
+                                    reader.accept(writer, ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES)
+                                    out.putNextEntry(new ZipEntry(entry.name))
+                                    out.write(writer.toByteArray())
+                                    out.closeEntry()
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            println "Exported ${names.size()} class signatures for offline compiler diagnostics."
+        }
+    }
+}
