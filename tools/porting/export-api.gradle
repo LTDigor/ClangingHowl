@@ -1,3 +1,8 @@
+initscript {
+    repositories { mavenCentral() }
+    dependencies { classpath 'org.ow2.asm:asm:9.7.1' }
+}
+
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
 import java.util.jar.JarFile
