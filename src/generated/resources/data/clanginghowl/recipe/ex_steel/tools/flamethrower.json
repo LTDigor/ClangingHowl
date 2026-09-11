@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "item": "clanginghowl:blaze_burner"
+    },
+    "C": {
+      "tag": "c:ingots/copper"
+    },
+    "F": {
+      "item": "clanginghowl:blaze_fuel_cylinder"
+    },
+    "I": {
+      "item": "clanginghowl:fireproof_steel_coating"
+    },
+    "P": {
+      "item": "clanginghowl:extraterrestrial_steel_ingot"
+    }
+  },
+  "pattern": [
+    "I  ",
+    "BPC",
+    " FC"
+  ],
+  "result": {
+    "id": "clanginghowl:flamethrower"
+  },
+  "show_notification": false
+}

@@ -1,5 +1,9 @@
 # NeoForge 1.21.1 port: initial migration status
 
+Follow-up: [entity-state attachment migration](attachments-followup.md). The
+original preparation history below is retained; the follow-up updates the
+capability integration points but is also uncompiled and not release-ready.
+
 **Status: WIP, not merge-ready, not a working mod. The source tree still contains known incompatible Forge 1.20.1 APIs and does not constitute a compilable NeoForge 1.21.1 port.**
 
 Prepared against `Polarice3/ClangingHowl`, `master`, commit
@@ -22,7 +26,7 @@ This patch switches the development target; it does not preserve a simultaneous 
 ## Known blockers already visible in inspected source
 
 1. `ClangingHowl.java` still uses Forge lifecycle, registration and config APIs, the old biome-modifier serializer type, old brewing setup, `SpawnPlacements.Type`, and legacy Curios IMC. Only the obsolete networking registration and `ResourceLocation` construction were changed here. Migrate the mod entry point and the registration helpers together; a bulk import replacement is insufficient.
-2. `CHCapUpdatePacket(LivingEntity)` and `CHClientPayloadHandlers.handle(CHCapUpdatePacket)` still call `getCapability`. `CHCapHelper.getCapability` also uses the Forge provider. Replace the state storage with NeoForge data attachments and update every read, write, persistence, player-clone and synchronization path. Keep the two visible integration points in this patch connected to real state; do not replace them with no-ops to get a green build.
+2. The follow-up replaces the inspected provider/access/packet/clone paths with a serializable attachment and adds lifecycle synchronization. Its Java compilation, full-tree reference audit and multiplayer behavior remain unverified; see `attachments-followup.md`. Legacy Forge save-container migration is not implemented.
 3. Apart from its direct packet send, `ClientEvents.java` is unchanged: Forge GUI overlays, event annotations and tick handling still need migration. Port rendering/event APIs before claiming client support.
 4. `LivingEntityMixin` still shadows the old `hasEffect(MobEffect)` signature. Audit every mixin descriptor against 1.21.1; retaining `required=true` and `defaultRequire=1` is intentional. Access-transformer targets have not been validated against Minecraft here.
 

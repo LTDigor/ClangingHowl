@@ -158,7 +158,11 @@ class NetworkScaffoldChecks(unittest.TestCase):
         self.assertEqual(1, mixins['injectors']['defaultRequire'])
         self.assertEqual('JAVA_21', mixins['compatibilityLevel'])
         self.assertNotIn('refmap', mixins)
-        self.assertEqual(6, len(mixins['mixins']))
+        self.assertEqual({
+            'EnchantRandomlyFunctionMixin', 'EntityMixin', 'FireBlockAccessor',
+            'LivingEntityMixin', 'MobEffectInstanceMixin', 'ServerLevelMixin',
+            'LivingEntityAccessor',
+        }, set(mixins['mixins']))
         self.assertEqual(8, len(mixins['client']))
 
     def test_junit_codec_tests_cover_all_packets(self):

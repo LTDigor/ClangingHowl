@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": {
+      "item": "clanginghowl:extraterrestrial_pebble"
+    }
+  },
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "result": {
+    "id": "clanginghowl:extraterrestrial_stone"
+  },
+  "show_notification": false
+}

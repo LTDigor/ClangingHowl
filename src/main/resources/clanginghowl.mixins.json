@@ -12,7 +12,8 @@
     "FireBlockAccessor",
     "LivingEntityMixin",
     "MobEffectInstanceMixin",
-    "ServerLevelMixin"
+    "ServerLevelMixin",
+    "LivingEntityAccessor"
   ],
   "client": [
     "ClientLevelMixin",

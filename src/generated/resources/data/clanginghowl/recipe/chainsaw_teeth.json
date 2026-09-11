@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "N": {
+      "item": "clanginghowl:extraterrestrial_steel_nugget"
+    }
+  },
+  "pattern": [
+    " NN",
+    "N N",
+    "NN "
+  ],
+  "result": {
+    "id": "clanginghowl:chainsaw_teeth"
+  },
+  "show_notification": false
+}

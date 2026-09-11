@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "clanginghowl:steel_bridge"
+  },
+  "result": {
+    "id": "clanginghowl:steel_bridge_slab",
+    "count": 2
+  }
+}

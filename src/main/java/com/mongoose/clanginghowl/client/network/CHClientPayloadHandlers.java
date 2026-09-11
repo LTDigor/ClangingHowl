@@ -3,7 +3,6 @@ package com.mongoose.clanginghowl.client.network;
 import com.mongoose.clanginghowl.client.world.CHClientWorld;
 import com.mongoose.clanginghowl.client.world.ICHClientWorld;
 import com.mongoose.clanginghowl.common.capabilities.CHCapHelper;
-import com.mongoose.clanginghowl.common.capabilities.CHCapProvider;
 import com.mongoose.clanginghowl.common.capabilities.CHCapUpdatePacket;
 import com.mongoose.clanginghowl.common.items.CHItems;
 import com.mongoose.clanginghowl.common.network.server.SInstaLookPacket;
@@ -16,6 +15,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -79,9 +79,8 @@ public final class CHClientPayloadHandlers {
             return;
         }
         Entity entity = level.getEntity(packet.entityID());
-        if (entity != null) {
-            // Legacy state access is deliberately visible until the attachment port lands.
-            entity.getCapability(CHCapProvider.CAPABILITY).ifPresent(state -> CHCapHelper.load(packet.tag(), state));
+        if (entity instanceof LivingEntity living) {
+            CHCapHelper.load(packet.tag(), CHCapHelper.getCapability(living));
         }
     }
 }

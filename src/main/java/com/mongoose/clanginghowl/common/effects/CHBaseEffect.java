@@ -14,7 +14,7 @@ public class CHBaseEffect extends MobEffect {
     }
 
     @Override
-    public void applyEffectTick(LivingEntity livingEntity, int amplify) {
+    public boolean applyEffectTick(LivingEntity livingEntity, int amplify) {
         super.applyEffectTick(livingEntity, amplify);
         if (this == CHEffects.NEUROTOXIN.get()) {
             if (livingEntity.tickCount % 20 == 0) {
@@ -28,10 +28,11 @@ public class CHBaseEffect extends MobEffect {
                 }
             }
         }
+        return true;
     }
 
     @Override
-    public boolean isDurationEffectTick(int p_19455_, int p_19456_) {
+    public boolean shouldApplyEffectTickThisTick(int p_19455_, int p_19456_) {
         return true;
     }
 }

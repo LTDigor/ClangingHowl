@@ -31,11 +31,9 @@ public class CHCapUpdatePacket implements CustomPacketPayload {
         this.tag = Objects.requireNonNull(tag, "tag").copy();
     }
 
-    /** State access still needs the separate Forge-capability to data-attachment port. */
+    /** Capture the entity's actual attached state, never a detached fallback instance. */
     public CHCapUpdatePacket(LivingEntity living) {
-        this(living.getId(), living.getCapability(CHCapProvider.CAPABILITY, null)
-                .map(state -> CHCapHelper.save(new CompoundTag(), state))
-                .orElseGet(CompoundTag::new));
+        this(living.getId(), CHCapSerialization.save(new CompoundTag(), CHCapHelper.getCapability(living)));
     }
 
     public static void encode(CHCapUpdatePacket packet, FriendlyByteBuf buffer) {
