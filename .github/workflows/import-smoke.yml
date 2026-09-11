@@ -22,15 +22,15 @@ jobs:
         run: |
           set -euo pipefail
           cp .port-import/manifest.json.xz "$RUNNER_TEMP/manifest.json.xz"
-          echo "42b0f13e4d7abf44d1f2b1463f061108a1a949c105b259a9b2c249e3efddfdbb  $RUNNER_TEMP/manifest.json.xz" | sha256sum --check
+          echo "d6dbe74cfdfce843842052fd754c3426450a790e404f755b794cf989e3e059af  $RUNNER_TEMP/manifest.json.xz" | sha256sum --check
           cp .port-import/apply.py "$RUNNER_TEMP/apply.py"
           git fetch origin port/neoforge-1.21.1
-          test "$(git rev-parse origin/port/neoforge-1.21.1)" = 75b7ff01da84458994daf0d877cdfaf1c71c244e
+          test "$(git rev-parse origin/port/neoforge-1.21.1)" = e9f87d8897a3291b7fee252742ade9f62f082ee4
           git switch -C port/neoforge-1.21.1 origin/port/neoforge-1.21.1
           python3 "$RUNNER_TEMP/apply.py" "$RUNNER_TEMP/manifest.json.xz"
           git config user.name Vadim
           git config user.email 71977735+LTDigor@users.noreply.github.com
-          git commit -m "test: add isolated server and client smoke probes; refresh generated data" -m "Adopt actual Minecraft 1.21.1 generator output, retain all 14 gameplay structures, and exclude development tests and cache data from the mod JAR. Verify entity and block-entity tick/save cycles, item components, datapack registries, client startup and arm-pose extensions."
+          git commit -m "fix: migrate model loaders and preserve server-side neurotoxin" -m "Replace legacy model loader and face-data keys, retain chainsaw geometry using supported format metadata, align nest variants with its unchanged four states. Reject missing baked item/block models in client smoke tests. Check non-player neurotoxin in GameTest and filter unrelated movement reports. Refresh port verification documentation."
           git push origin HEAD:refs/heads/port/neoforge-1.21.1
           echo "commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
   verify:
@@ -75,10 +75,11 @@ jobs:
         run: |
           set -o pipefail
           timeout 300s bash ./gradlew --no-daemon --console=plain --stacktrace runGameTestServer 2>&1 | tee verification/gametest.log
-      - name: Client startup and render-resource smoke probe
+      - name: Client startup and all baked models
         if: ${{ !cancelled() && steps.build.outcome == 'success' }}
         env:
           LIBGL_ALWAYS_SOFTWARE: 'true'
+          ALSOFT_DRIVERS: 'null'
         run: |
           set -euo pipefail
           mkdir -p run-client-smoke
