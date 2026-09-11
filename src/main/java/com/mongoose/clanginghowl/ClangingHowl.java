@@ -2,7 +2,6 @@ package com.mongoose.clanginghowl;
 
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.MapCodec;
-import com.mongoose.clanginghowl.client.ClientProxy;
 import com.mongoose.clanginghowl.client.inventory.menu.CHMenuTypes;
 import com.mongoose.clanginghowl.client.particles.CHParticleTypes;
 import com.mongoose.clanginghowl.common.CommonProxy;
@@ -34,8 +33,6 @@ import net.neoforged.neoforge.common.world.BiomeModifier;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
@@ -49,8 +46,7 @@ import top.theillusivec4.curios.api.CuriosApi;
 public class ClangingHowl {
     public static final String MOD_ID = "clanginghowl";
     public static final Logger LOGGER = LogUtils.getLogger();
-    public static CHProxy PROXY = FMLEnvironment.dist == Dist.CLIENT ? new ClientProxy() : new CommonProxy();
-    public static SidedInit SIDED_INIT = FMLEnvironment.dist == Dist.CLIENT ? new ClientSideInit() : new SidedInit();
+    public static CHProxy PROXY = new CommonProxy();
 
     public static ResourceLocation location(String path) {
         return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
@@ -80,7 +76,6 @@ public class ClangingHowl {
         CHEffects.init(modEventBus);
         CHPotions.init(modEventBus);
         CHSounds.init(modEventBus);
-        SIDED_INIT.init(modEventBus);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {

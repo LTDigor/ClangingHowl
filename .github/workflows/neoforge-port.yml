@@ -3,6 +3,8 @@ name: NeoForge 1.21.1 port verification
 on:
   push:
     branches: [port/neoforge-1.21.1]
+  pull_request:
+    branches: [master]
   workflow_dispatch:
 
 permissions:
@@ -18,27 +20,47 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Java 21
-        uses: actions/setup-java@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '21'
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@v4
         with:
-          cache-read-only: false
-      - name: Save exact source snapshot
+          cache-read-only: ${{ github.event_name == 'pull_request' }}
+      - name: Record source and check migration contracts
         run: |
+          set -euo pipefail
           mkdir -p verification
           git rev-parse HEAD > verification/commit.txt
           git archive --format=tar HEAD > verification/source.tar
-      - name: Export compiler signatures (not executable dependencies)
-        run: bash ./gradlew --no-daemon --console=plain -I tools/porting/export-api.gradle exportCompileApi
-      - name: Compile and test the complete mod
-        shell: bash
+          python3 tools/porting/test_network_scaffold.py
+          python3 tools/porting/test_attachment_scaffold.py
+          python3 tools/porting/test_resource_contracts.py
+      - name: Compile the complete mod
+        id: assemble
         run: |
           set -o pipefail
-          bash ./gradlew --no-daemon --console=plain clean build 2>&1 | tee verification/build.log
+          bash ./gradlew --no-daemon --console=plain --stacktrace clean assemble 2>&1 | tee verification/assemble.log
+      - name: Load dedicated-server mod and execute JUnit
+        run: |
+          set -o pipefail
+          bash ./gradlew --no-daemon --console=plain --stacktrace test 2>&1 | tee verification/test.log
+      - name: Load mod and generate data
+        if: ${{ !cancelled() && steps.assemble.outcome == 'success' }}
+        run: |
+          set -o pipefail
+          bash ./gradlew --no-daemon --console=plain --stacktrace runData 2>&1 | tee verification/datagen.log
+      - name: Verify generated resources and package
+        if: success()
+        run: |
+          set -euo pipefail
+          git diff --check
+          git diff -- src/generated/resources > verification/datagen.diff
+          tar -cf verification/generated-resources.tar src/generated/resources
+          python3 tools/porting/test_resource_contracts.py
+          bash ./gradlew --no-daemon --console=plain --stacktrace build 2>&1 | tee verification/package.log
       - name: Upload diagnostics
         if: always()
         uses: actions/upload-artifact@v4
@@ -48,8 +70,10 @@ jobs:
             verification/
             build/reports/
             build/test-results/
+            run/logs/
+            run/crash-reports/
           if-no-files-found: error
-          retention-days: 1
+          retention-days: 3
       - name: Upload successfully built JARs
         if: success()
         uses: actions/upload-artifact@v4

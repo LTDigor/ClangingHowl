@@ -27,6 +27,15 @@ def read(path):
 
 
 class NetworkScaffoldChecks(unittest.TestCase):
+    def test_common_entrypoint_has_no_client_class_references(self):
+        common = read(JAVA / 'ClangingHowl.java')
+        for client_symbol in ['ClientSideInit', 'ClientProxy', 'SIDED_INIT', 'FMLEnvironment.dist']:
+            self.assertNotIn(client_symbol, common)
+        client = read(JAVA / 'client/ClangingHowlClient.java')
+        self.assertIn('@Mod(value = ClangingHowl.MOD_ID, dist = Dist.CLIENT)', client)
+        self.assertIn('new ClientSideInit().init(modEventBus)', client)
+        self.assertIn('ClangingHowl.PROXY = new ClientProxy()', client)
+
     def test_target_versions_are_pinned(self):
         props = dict(line.split('=', 1) for line in read(ROOT / 'gradle.properties').splitlines()
                      if line and not line.startswith('#'))
