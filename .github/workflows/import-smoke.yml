@@ -1,0 +1,121 @@
+name: Import and run full port smoke tests
+on:
+  push:
+    branches: [port/import-smoke-1.21.1]
+permissions:
+  contents: read
+jobs:
+  import:
+    if: github.repository == 'LTDigor/ClangingHowl'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    outputs:
+      commit: ${{ steps.publish.outputs.commit }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Import exact verified source delta
+        id: publish
+        run: |
+          set -euo pipefail
+          cp .port-import/manifest.json.xz "$RUNNER_TEMP/manifest.json.xz"
+          echo "42b0f13e4d7abf44d1f2b1463f061108a1a949c105b259a9b2c249e3efddfdbb  $RUNNER_TEMP/manifest.json.xz" | sha256sum --check
+          cp .port-import/apply.py "$RUNNER_TEMP/apply.py"
+          git fetch origin port/neoforge-1.21.1
+          test "$(git rev-parse origin/port/neoforge-1.21.1)" = 75b7ff01da84458994daf0d877cdfaf1c71c244e
+          git switch -C port/neoforge-1.21.1 origin/port/neoforge-1.21.1
+          python3 "$RUNNER_TEMP/apply.py" "$RUNNER_TEMP/manifest.json.xz"
+          git config user.name Vadim
+          git config user.email 71977735+LTDigor@users.noreply.github.com
+          git commit -m "test: add isolated server and client smoke probes; refresh generated data" -m "Adopt actual Minecraft 1.21.1 generator output, retain all 14 gameplay structures, and exclude development tests and cache data from the mod JAR. Verify entity and block-entity tick/save cycles, item components, datapack registries, client startup and arm-pose extensions."
+          git push origin HEAD:refs/heads/port/neoforge-1.21.1
+          echo "commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+  verify:
+    needs: import
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.import.outputs.commit }}
+          persist-credentials: false
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: false
+      - name: Record source and verify contracts
+        run: |
+          set -euo pipefail
+          mkdir -p verification
+          git rev-parse HEAD > verification/commit.txt
+          git archive --format=tar HEAD > verification/source.tar
+          python3 tools/porting/test_network_scaffold.py
+          python3 tools/porting/test_attachment_scaffold.py
+          python3 tools/porting/test_resource_contracts.py
+      - name: Compile complete mod and run JUnit
+        id: build
+        run: |
+          set -o pipefail
+          bash ./gradlew --no-daemon --console=plain --stacktrace clean build 2>&1 | tee verification/build.log
+      - name: Load and generate data
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: |
+          set -o pipefail
+          bash ./gradlew --no-daemon --console=plain --stacktrace runData 2>&1 | tee verification/datagen.log
+      - name: GameTest world, entities and block entities
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: |
+          set -o pipefail
+          timeout 300s bash ./gradlew --no-daemon --console=plain --stacktrace runGameTestServer 2>&1 | tee verification/gametest.log
+      - name: Client startup and render-resource smoke probe
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        env:
+          LIBGL_ALWAYS_SOFTWARE: 'true'
+        run: |
+          set -euo pipefail
+          mkdir -p run-client-smoke
+          printf 'onboardAccessibility:false\n' > run-client-smoke/options.txt
+          timeout 300s xvfb-run -a bash ./gradlew --no-daemon --console=plain --stacktrace runClientSmoke 2>&1 | tee verification/client-smoke.log
+          grep -q CLANGINGHOWL_CLIENT_SMOKE_PASS verification/client-smoke.log
+      - name: Package verified mod
+        if: success()
+        run: |
+          set -euo pipefail
+          git diff --check
+          git diff -- src/generated/resources > verification/datagen.diff
+          tar -cf verification/generated-resources.tar src/generated/resources
+          python3 tools/porting/test_resource_contracts.py
+          bash ./gradlew --no-daemon --console=plain build 2>&1 | tee verification/package.log
+      - name: Preserve diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: port-verification-${{ needs.import.outputs.commit }}
+          path: |
+            verification/
+            build/reports/
+            build/test-results/
+            run/logs/
+            run/crash-reports/
+            run-gametest/logs/
+            run-gametest/crash-reports/
+            run-client-smoke/logs/
+            run-client-smoke/crash-reports/
+          if-no-files-found: error
+          retention-days: 3
+      - name: Preserve verified JAR
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: clanginghowl-neoforge-1.21.1-${{ needs.import.outputs.commit }}
+          path: build/libs/*.jar
+          if-no-files-found: error
+          retention-days: 7
