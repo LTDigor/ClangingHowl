@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "clanginghowl:techno_optics"
-            ]
+            "items": "clanginghowl:techno_optics"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_item",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_item"
     ]
   ],
   "rewards": {
     "recipes": [
       "clanginghowl:ex_steel/tools/x_ray_goggles"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

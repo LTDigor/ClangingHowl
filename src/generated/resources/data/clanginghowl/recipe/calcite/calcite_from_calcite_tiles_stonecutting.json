@@ -4,7 +4,7 @@
     "item": "minecraft:calcite"
   },
   "result": {
-    "id": "clanginghowl:calcite_tiles",
-    "count": 1
+    "count": 1,
+    "id": "clanginghowl:calcite_tiles"
   }
 }

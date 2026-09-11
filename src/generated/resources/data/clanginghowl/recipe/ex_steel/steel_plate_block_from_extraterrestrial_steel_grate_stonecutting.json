@@ -4,7 +4,7 @@
     "item": "clanginghowl:steel_plate_block"
   },
   "result": {
-    "id": "clanginghowl:extraterrestrial_steel_grate",
-    "count": 4
+    "count": 4,
+    "id": "clanginghowl:extraterrestrial_steel_grate"
   }
 }

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "clanginghowl:energy_battery"
-            ]
+            "items": "clanginghowl:energy_battery"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_item",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_item"
     ]
   ],
   "rewards": {
     "recipes": [
       "clanginghowl:battery_panel"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

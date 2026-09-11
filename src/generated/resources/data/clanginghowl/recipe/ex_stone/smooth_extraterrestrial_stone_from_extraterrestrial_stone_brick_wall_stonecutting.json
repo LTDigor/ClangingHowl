@@ -4,7 +4,7 @@
     "item": "clanginghowl:smooth_extraterrestrial_stone"
   },
   "result": {
-    "id": "clanginghowl:extraterrestrial_stone_brick_wall",
-    "count": 1
+    "count": 1,
+    "id": "clanginghowl:extraterrestrial_stone_brick_wall"
   }
 }

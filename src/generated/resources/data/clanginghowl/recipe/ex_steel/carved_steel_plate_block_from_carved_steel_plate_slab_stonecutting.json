@@ -4,7 +4,7 @@
     "item": "clanginghowl:carved_steel_plate_block"
   },
   "result": {
-    "id": "clanginghowl:carved_steel_plate_slab",
-    "count": 2
+    "count": 2,
+    "id": "clanginghowl:carved_steel_plate_slab"
   }
 }

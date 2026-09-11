@@ -52,6 +52,21 @@ jobs:
         run: |
           set -o pipefail
           bash ./gradlew --no-daemon --console=plain --stacktrace runData 2>&1 | tee verification/datagen.log
+      - name: Exercise entities, block entities and datapacks in GameTest server
+        if: ${{ !cancelled() && steps.assemble.outcome == 'success' }}
+        run: |
+          set -o pipefail
+          timeout 300s bash ./gradlew --no-daemon --console=plain --stacktrace runGameTestServer 2>&1 | tee verification/gametest.log
+      - name: Start client with software rendering and check title-screen readiness
+        if: ${{ !cancelled() && steps.assemble.outcome == 'success' }}
+        env:
+          LIBGL_ALWAYS_SOFTWARE: 'true'
+        run: |
+          set -euo pipefail
+          mkdir -p run-client-smoke
+          printf 'onboardAccessibility:false\n' > run-client-smoke/options.txt
+          timeout 300s xvfb-run -a bash ./gradlew --no-daemon --console=plain --stacktrace runClientSmoke 2>&1 | tee verification/client-smoke.log
+          grep -q CLANGINGHOWL_CLIENT_SMOKE_PASS verification/client-smoke.log
       - name: Verify generated resources and package
         if: success()
         run: |
@@ -72,6 +87,10 @@ jobs:
             build/test-results/
             run/logs/
             run/crash-reports/
+            run-gametest/logs/
+            run-gametest/crash-reports/
+            run-client-smoke/logs/
+            run-client-smoke/crash-reports/
           if-no-files-found: error
           retention-days: 3
       - name: Upload successfully built JARs

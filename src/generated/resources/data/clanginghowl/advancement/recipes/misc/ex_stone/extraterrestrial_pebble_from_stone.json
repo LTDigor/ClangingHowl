@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "clanginghowl:extraterrestrial_stone"
-            ]
+            "items": "clanginghowl:extraterrestrial_stone"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_item",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_item"
     ]
   ],
   "rewards": {
     "recipes": [
       "clanginghowl:ex_stone/extraterrestrial_pebble_from_stone"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

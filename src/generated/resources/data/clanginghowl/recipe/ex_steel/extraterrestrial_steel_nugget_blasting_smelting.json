@@ -7,7 +7,7 @@
     "item": "clanginghowl:piece_of_extraterrestrial_steel"
   },
   "result": {
-    "id": "clanginghowl:extraterrestrial_steel_nugget",
-    "count": 1
+    "count": 1,
+    "id": "clanginghowl:extraterrestrial_steel_nugget"
   }
 }

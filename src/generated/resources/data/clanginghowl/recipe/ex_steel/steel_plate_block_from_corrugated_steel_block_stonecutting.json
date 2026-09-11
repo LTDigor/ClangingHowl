@@ -4,7 +4,7 @@
     "item": "clanginghowl:steel_plate_block"
   },
   "result": {
-    "id": "clanginghowl:corrugated_steel_block",
-    "count": 2
+    "count": 2,
+    "id": "clanginghowl:corrugated_steel_block"
   }
 }

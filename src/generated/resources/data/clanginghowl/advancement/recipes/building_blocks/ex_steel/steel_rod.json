@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "clanginghowl:extraterrestrial_steel_nugget"
-            ]
+            "items": "clanginghowl:extraterrestrial_steel_nugget"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_item",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_item"
     ]
   ],
   "rewards": {
     "recipes": [
       "clanginghowl:ex_steel/steel_rod"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

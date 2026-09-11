@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "clanginghowl:chainsaw_teeth"
-            ]
+            "items": "clanginghowl:chainsaw_teeth"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_item",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_item"
     ]
   ],
   "rewards": {
     "recipes": [
       "clanginghowl:advanced_chainsaw"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

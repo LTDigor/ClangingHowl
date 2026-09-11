@@ -11,7 +11,23 @@ group = mod_group_id
 base { archivesName = mod_id }
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
+    exclude '**/.cache/**'
+}
+
+// Development probes are loaded by run configurations, never packaged into the mod.
+sourceSets {
+    smoke {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
+}
+configurations {
+    smokeImplementation.extendsFrom implementation
+    smokeCompileOnly.extendsFrom compileOnly
+    smokeRuntimeOnly.extendsFrom runtimeOnly, localRuntime
+}
 
 repositories {
     mavenCentral()
@@ -62,6 +78,7 @@ dependencies {
 
 neoForge {
     version = project.neo_version
+    addModdingDependenciesTo sourceSets.smoke
     // Keep stale 1.20.1 targets visible as errors; do not hide them during the port.
     validateAccessTransformers = true
 
@@ -71,7 +88,17 @@ neoForge {
             server()
             programArgument '--nogui'
         }
-        gameTestServer { type = 'gameTestServer' }
+        gameTestServer {
+            type = 'gameTestServer'
+            sourceSet = sourceSets.smoke
+            gameDirectory = project.file('run-gametest')
+        }
+        clientSmoke {
+            client()
+            sourceSet = sourceSets.smoke
+            gameDirectory = project.file('run-client-smoke')
+            systemProperty 'clanginghowl.smokeTest', 'true'
+        }
         data {
             data()
             programArguments.addAll '--mod', project.mod_id, '--all',
@@ -86,7 +113,10 @@ neoForge {
     }
 
     mods {
-        "${mod_id}" { sourceSet(sourceSets.main) }
+        "${mod_id}" {
+            sourceSet(sourceSets.main)
+            sourceSet(sourceSets.smoke)
+        }
     }
     unitTest {
         enable()

@@ -4,7 +4,7 @@
     "item": "clanginghowl:carved_steel_plate_block"
   },
   "result": {
-    "id": "clanginghowl:carved_steel_plate_stairs",
-    "count": 1
+    "count": 1,
+    "id": "clanginghowl:carved_steel_plate_stairs"
   }
 }

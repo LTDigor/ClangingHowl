@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "clanginghowl:extraterrestrial_steel"
-            ]
+            "items": "clanginghowl:extraterrestrial_steel"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_item",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_item"
     ]
   ],
   "rewards": {
     "recipes": [
       "clanginghowl:ex_steel/extraterrestrial_steel_ingot_blasting_smelting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

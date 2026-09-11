@@ -4,7 +4,7 @@
     "item": "clanginghowl:steel_bridge"
   },
   "result": {
-    "id": "clanginghowl:steel_bridge_slab",
-    "count": 2
+    "count": 2,
+    "id": "clanginghowl:steel_bridge_slab"
   }
 }

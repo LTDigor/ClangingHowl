@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "clanginghowl:extraterrestrial_steel_plate"
-            ]
+            "items": "clanginghowl:extraterrestrial_steel_plate"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_item",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_item"
     ]
   ],
   "rewards": {
     "recipes": [
       "clanginghowl:ex_steel/steel_bridge"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }
