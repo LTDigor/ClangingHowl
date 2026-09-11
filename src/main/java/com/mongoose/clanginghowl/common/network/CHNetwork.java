@@ -57,6 +57,12 @@ public final class CHNetwork {
     }
 
     public static <MSG extends CustomPacketPayload> void sendToServer(MSG msg) {
+        if (msg instanceof CIsMovingPacket movement) {
+            Player player = ClangingHowl.PROXY.getPlayer();
+            if (player == null || movement.entityID() != player.getId()) {
+                return;
+            }
+        }
         PacketDistributor.sendToServer(msg);
     }
 

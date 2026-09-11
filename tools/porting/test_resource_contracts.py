@@ -7,6 +7,23 @@ ROOT = Path(__file__).resolve().parents[2]
 DATA = [ROOT / 'src/main/resources/data', ROOT / 'src/generated/resources/data']
 
 class ResourceContracts(unittest.TestCase):
+    def test_asset_loaders_and_face_data_use_neoforge(self):
+        for folder in ['src/main/resources/assets', 'src/generated/resources/assets']:
+            for path in (ROOT / folder).rglob('*.json'):
+                text = path.read_text()
+                self.assertNotIn('"forge:', text, str(path))
+                self.assertNotIn('"forge_data"', text, str(path))
+
+    def test_consummate_nest_variants_match_runtime_states(self):
+        path = ROOT / 'src/main/resources/assets/clanginghowl/blockstates/consummate_nest.json'
+        self.assertEqual({'consummate_nest_state=' + value for value in
+                          ['inactive', 'active', 'ejecting_reward', 'cooldown']},
+                         set(json.loads(path.read_text())['variants']))
+
+    def test_geckolib_geometry_uses_supported_version(self):
+        for path in (ROOT / 'src/main/resources/assets/clanginghowl/geo').glob('*.json'):
+            self.assertEqual('1.12.0', json.loads(path.read_text())['format_version'], str(path))
+
     def test_no_legacy_data_directories(self):
         obsolete = {'advancements', 'recipes', 'loot_tables', 'structures', 'predicates', 'functions', 'item_modifiers'}
         obsolete_tags = {'items', 'blocks', 'entity_types', 'fluids', 'game_events', 'functions'}

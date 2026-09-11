@@ -54,6 +54,25 @@ public final class PortGameTests {
     }
 
     @GameTest(template = "port_smoke")
+    public static void neurotoxinUsesServerMobMovement(GameTestHelper helper) {
+        var moving = helper.spawn(net.minecraft.world.entity.EntityType.COW, 2, 1, 2);
+        var stationary = helper.spawn(net.minecraft.world.entity.EntityType.COW, 6, 1, 6);
+        moving.setNoAi(true);
+        stationary.setNoAi(true);
+        moving.tickCount = stationary.tickCount = 20;
+        moving.setDeltaMovement(0.1, 0, 0);
+        stationary.setDeltaMovement(0, 0, 0);
+        float movingHealth = moving.getHealth();
+        float stationaryHealth = stationary.getHealth();
+        var neurotoxin = com.mongoose.clanginghowl.common.effects.CHEffects.NEUROTOXIN.get();
+        neurotoxin.applyEffectTick(moving, 0);
+        neurotoxin.applyEffectTick(stationary, 0);
+        helper.assertTrue(moving.getHealth() < movingHealth, "Moving mob escaped neurotoxin without any connected client");
+        helper.assertTrue(stationary.getHealth() == stationaryHealth, "Stationary mob received movement-only damage");
+        helper.succeed();
+    }
+
+    @GameTest(template = "port_smoke")
     public static void energyComponentsAreCopiedAndSaved(GameTestHelper helper) {
         ItemStack stack = new ItemStack(CHItems.ADVANCED_CHAINSAW.get());
         ((IEnergyItem) stack.getItem()).setTagTick(stack);
